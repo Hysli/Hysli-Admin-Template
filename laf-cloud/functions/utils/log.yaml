@@ -1,0 +1,5 @@
+name: utils/log
+methods:
+  - GET
+  - POST
+tags: []

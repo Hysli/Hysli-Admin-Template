@@ -1,0 +1,5 @@
+name: notify/wxpay_native_notify
+methods:
+  - GET
+  - POST
+tags: []

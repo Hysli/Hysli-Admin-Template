@@ -1,0 +1,5 @@
+name: dao/user/login_log
+methods:
+  - GET
+  - POST
+tags: []

@@ -1,0 +1,5 @@
+name: service/role/sys/updateRole
+methods:
+  - GET
+  - POST
+tags: []

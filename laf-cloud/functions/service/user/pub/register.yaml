@@ -1,0 +1,5 @@
+name: service/user/pub/register
+methods:
+  - GET
+  - POST
+tags: []

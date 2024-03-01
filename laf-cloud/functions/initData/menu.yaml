@@ -1,0 +1,5 @@
+name: initData/menu
+methods:
+  - GET
+  - POST
+tags: []

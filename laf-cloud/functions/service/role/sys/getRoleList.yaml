@@ -1,0 +1,5 @@
+name: service/role/sys/getRoleList
+methods:
+  - GET
+  - POST
+tags: []

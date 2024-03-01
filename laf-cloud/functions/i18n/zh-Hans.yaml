@@ -1,0 +1,5 @@
+name: i18n/zh-Hans
+methods:
+  - GET
+  - POST
+tags: []

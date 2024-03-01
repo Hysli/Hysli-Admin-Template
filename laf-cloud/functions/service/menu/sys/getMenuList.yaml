@@ -1,0 +1,5 @@
+name: service/menu/sys/getMenuList
+methods:
+  - GET
+  - POST
+tags: []

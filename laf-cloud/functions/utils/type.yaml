@@ -1,0 +1,5 @@
+name: utils/type
+methods:
+  - GET
+  - POST
+tags: []

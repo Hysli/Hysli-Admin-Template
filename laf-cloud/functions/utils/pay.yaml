@@ -1,0 +1,5 @@
+name: utils/pay
+methods:
+  - GET
+  - POST
+tags: []

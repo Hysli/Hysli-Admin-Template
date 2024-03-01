@@ -1,0 +1,5 @@
+name: dao/role_manage/index
+methods:
+  - GET
+  - POST
+tags: []

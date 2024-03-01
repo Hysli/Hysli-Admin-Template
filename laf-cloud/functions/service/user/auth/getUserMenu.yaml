@@ -1,0 +1,5 @@
+name: service/user/auth/getUserMenu
+methods:
+  - GET
+  - POST
+tags: []
