@@ -1,0 +1,33 @@
+import {
+	SettingOutlined,
+	SearchOutlined,
+	MenuFoldOutlined,
+	MenuUnfoldOutlined,
+	FullscreenOutlined,
+	FullscreenExitOutlined,
+	PoweroffOutlined,
+	GithubOutlined,
+	TranslationOutlined,
+	LockOutlined,
+	ReloadOutlined,
+	LogoutOutlined,
+	UserOutlined,
+	CheckOutlined,
+} from '@vicons/antd'
+
+export default {
+	SettingOutlined,
+	LockOutlined,
+	TranslationOutlined,
+	GithubOutlined,
+	SearchOutlined,
+	MenuFoldOutlined,
+	MenuUnfoldOutlined,
+	FullscreenOutlined,
+	FullscreenExitOutlined,
+	PoweroffOutlined,
+	ReloadOutlined,
+	LogoutOutlined,
+	UserOutlined,
+	CheckOutlined,
+}

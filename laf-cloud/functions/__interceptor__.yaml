@@ -1,0 +1,8 @@
+name: __interceptor__
+methods:
+  - GET
+  - POST
+  - PUT
+  - PATCH
+  - DELETE
+tags: []

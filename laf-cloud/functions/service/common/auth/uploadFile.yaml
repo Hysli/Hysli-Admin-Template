@@ -1,0 +1,5 @@
+name: service/common/auth/uploadFile
+methods:
+  - GET
+  - POST
+tags: []

@@ -1,0 +1,5 @@
+name: initData/base_data
+methods:
+  - GET
+  - POST
+tags: []

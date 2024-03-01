@@ -1,0 +1,5 @@
+name: service/role/sys/addRole
+methods:
+  - GET
+  - POST
+tags: []

@@ -1,0 +1,5 @@
+name: utils/qiniu
+methods:
+  - GET
+  - POST
+tags: []

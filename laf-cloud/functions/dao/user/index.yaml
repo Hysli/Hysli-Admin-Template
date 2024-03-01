@@ -1,0 +1,5 @@
+name: dao/user/index
+methods:
+  - GET
+  - POST
+tags: []

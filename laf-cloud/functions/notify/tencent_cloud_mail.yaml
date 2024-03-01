@@ -1,0 +1,5 @@
+name: notify/tencent_cloud_mail
+methods:
+  - GET
+  - POST
+tags: []

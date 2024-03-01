@@ -1,0 +1,5 @@
+name: service/role/sys/deleteRole
+methods:
+  - GET
+  - POST
+tags: []

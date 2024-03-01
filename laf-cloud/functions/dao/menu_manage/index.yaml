@@ -1,0 +1,5 @@
+name: dao/menu_manage/index
+methods:
+  - GET
+  - POST
+tags: []

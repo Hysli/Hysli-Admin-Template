@@ -1,0 +1,5 @@
+name: utils/sms
+methods:
+  - GET
+  - POST
+tags: []

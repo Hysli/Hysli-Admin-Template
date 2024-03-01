@@ -1,0 +1,5 @@
+name: utils/index
+methods:
+  - GET
+  - POST
+tags: []

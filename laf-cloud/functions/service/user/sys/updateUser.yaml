@@ -1,0 +1,5 @@
+name: service/user/sys/updateUser
+methods:
+  - GET
+  - POST
+tags: []

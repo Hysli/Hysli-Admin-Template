@@ -1,0 +1,5 @@
+name: global
+methods:
+  - GET
+  - POST
+tags: []

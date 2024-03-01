@@ -1,0 +1,6 @@
+name: service/user/sys/addUser
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []
