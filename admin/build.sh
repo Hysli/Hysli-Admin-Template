@@ -7,4 +7,4 @@ pnpm install
 pnpm build
 
 # 编译 Docker
-docker build -t hysli-admin-template .
+docker build --platform=linux/amd64 -t nightwhite634/hysli-admin-template .
