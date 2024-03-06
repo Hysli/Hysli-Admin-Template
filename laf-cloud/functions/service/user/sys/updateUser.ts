@@ -11,31 +11,39 @@ export default async function (ctx: FunctionContext) {
   const _data = ctx.body
 
   // 如果 data 中没有 name 或者 code，返回错误
-  if (!_data?.email || !_data?.phone || !_data?._id) {
-    return common.returnFail('Error: _id or email or phone is empty')
+  if (!_data?.username || !_data?._id) {
+    return common.returnFail('Error: _id or username is empty')
   }
+  // if (!_data?.email || !_data?.phone || !_data?._id) {
+  //   return common.returnFail('Error: _id or email or phone is empty')
+  // }
 
   // 校验用户是否存在
   let userData = await dao.userDao.getInfoById(_data._id)
   if (!userData) {
     return common.returnFail(t('data.notExist'))
   }
+  // 校验用户名是否已被使用
+  const isUserName = await dao.userDao.isRegisterByUserName(_data.username, userData._id)
+  if (isUserName) {
+    return common.returnFail(t('username.registered'))
+  }
   // 邮箱格式校验
-  if (!common.isEmail(_data.email)) {
+  if (_data.email && !common.isEmail(_data.email)) {
     return common.returnFail(t('email.error'))
   }
   // 校验邮箱是否已被使用
   const isEmail = await dao.userDao.isRegisterByEmail(_data.email, userData._id)
-  if (isEmail) {
+  if (_data.email && isEmail) {
     return common.returnFail(t('email.registered'))
   }
   // 手机号格式校验
-  if (!common.isPhone(_data.phone)) {
+  if (_data.phone && !common.isPhone(_data.phone)) {
     return common.returnFail(t('phone.error'))
   }
   // 手机号是否已被使用
   const isPhone = await dao.userDao.isRegisterByPhone(_data.phone, userData._id)
-  if (isPhone) {
+  if (_data.isPhone && isPhone) {
     return common.returnFail(t('phone.registered'))
   }
   // 密码格式校验
@@ -45,6 +53,7 @@ export default async function (ctx: FunctionContext) {
 
   try {
     // 用户信息
+    userData.username = _data.username ?? userData.username
     userData.email = _data.email ?? userData.email
     userData.phone = _data.phone ?? userData.phone
     if (_data.password) {

@@ -6,16 +6,22 @@
 
     <n-form :model="state.ruleForm" ref="ruleFormRef" label-placement="left" require-mark-placement="left"
       :label-width="80" class="py-4">
-      <n-form-item label="邮箱" path="email" :rule="[{ required: true, message: '邮箱不能为空', trigger: 'blur' }]">
+      <n-form-item label="用户名" path="username" :rule="[{ required: true, message: '用户名不能为空', trigger: 'blur' }]">
+        <n-input placeholder="请输入用户名" v-model:value="state.ruleForm.username" clearable />
+      </n-form-item>
+      <n-form-item label="邮箱" path="email"
+        :rule="[{ required: !state.enableUserName, message: '邮箱不能为空', trigger: 'blur' }]">
         <n-input placeholder="请输入邮箱" v-model:value="state.ruleForm.email" clearable />
       </n-form-item>
-      <n-form-item label="手机号" path="phone" :rule="[{ required: true, message: '手机号不能为空', trigger: 'blur' }]">
+      <n-form-item label="手机号" path="phone"
+        :rule="[{ required: !state.enableUserName, message: '手机号不能为空', trigger: 'blur' }]">
         <n-input placeholder="请输入手机号" v-model:value="state.ruleForm.phone" clearable />
       </n-form-item>
       <n-form-item v-if="!state.ruleForm._id" label="密码" path="password"
         :rule="[{ required: true, message: '密码不能为空', trigger: 'blur' }]">
         <div style="width: 100%;">
-          <n-input type="password" show-password-on="click" placeholder="请输入密码" v-model:value="state.ruleForm.password" />
+          <n-input type="password" show-password-on="click" placeholder="请输入密码"
+            v-model:value="state.ruleForm.password" />
           <div class="tips">密码规则：6-20 位，数字、常见符号和大小写英文字母</div>
         </div>
       </n-form-item>
@@ -45,10 +51,14 @@
     </template>
   </n-modal>
 </template>
+
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue'
 import { getRoleList } from '@/api/system/role'
 import { addUser, updateUser } from '@/api/system/user'
+
+import { useGlobSetting } from '@/hooks/setting'
+const globSetting = useGlobSetting()
 
 const ruleFormRef = ref()
 const props = defineProps({
@@ -60,10 +70,12 @@ const state = reactive({
   showModal: false,
   btnLoading: false,
   ruleForm: {} as any,
-  roleData: [] as any
+  roleData: [] as any,
+  enableUserName: null
 })
 
 onMounted(() => {
+  state.enableUserName = globSetting.enableUserName == 'true'
   getRoleData()
 })
 
@@ -86,6 +98,7 @@ const openModal = (record: any) => {
   }
   else {
     state.ruleForm = {
+      username: '',
       email: '',
       phone: '',
       password: '',
@@ -130,6 +143,7 @@ const confirmForm = () => {
 // 导出对象
 defineExpose({ openModal })
 </script>
+
 <style lang="less" scoped>
 .tips {
   font-size: 12px;

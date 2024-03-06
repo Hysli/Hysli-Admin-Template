@@ -20,6 +20,12 @@ export const dao: DaoType = {
 export interface DaoType {
   userDao: {
     /**
+   * 通过用户名查询用户
+   * @param username 用户名
+   * @returns 返回User实体
+   */
+    findByUserName: (username: string) => Promise<User>
+    /**
      * 通过手机号或者邮箱查询用户（邮箱和手机号不能同时为空）
      * @param email 邮箱
      * @param phone 手机号
@@ -33,6 +39,16 @@ export interface DaoType {
      * @returns 成功时返回id值，失败时返回null
      */
     addUser: (entity: User) => Promise<any>
+    /**
+   * 用户名是否已经注册
+   * @param username 用户名
+   * @param _id 用户id
+   * @returns 未注册返回false，已注册或失败返回true
+   */
+    isRegisterByUserName: (
+      username: string,
+      _id?: string
+    ) => Promise<boolean>
     /**
      * 用户邮箱是否已经注册
      * @param email 邮箱

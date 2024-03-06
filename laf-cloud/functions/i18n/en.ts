@@ -5,6 +5,8 @@ const en = {
   'locale.zh-hant': '繁体中文',
   'locale.ja': '日语',
   'index.title': 'Hello i18n',
+  'username.registered': 'Username has been registered',
+  'username.notRegistered': 'Username is not registered',
   'email.error': 'Email format error',
   'email.registered': 'Email already registered',
   'email.notRegistered': 'Email not registered',

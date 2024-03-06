@@ -10,6 +10,12 @@ export default async function (ctx: FunctionContext) {
   const { _type, _data } = ctx.body
 
   switch (_type) {
+    case 'username':
+      // 如果 data 中没有 username 或者 password，返回错误
+      if (!_data?.username || !_data?.password) {
+        return common.returnFail('Error: username or password is empty')
+      }
+      return await registerByUserName(_data.username, _data.password)
     case 'email':
       // 如果 data 中没有 email 或者 code、password，返回错误
       if (!_data?.email || !_data?.code || !_data?.password) {
@@ -36,6 +42,50 @@ export default async function (ctx: FunctionContext) {
       return await sendSmsCode(_data.phone)
     default:
       return common.returnFail('Error: type is error')
+  }
+
+  // 通过用户名注册账号
+  async function registerByUserName(username: string, password: string) {
+    // 密码格式校验
+    if (!common.validatePassword(password)) {
+      return common.returnFail(t('password.formatError'))
+    }
+    // 校验用户名是否已经注册
+    const isRegister = await dao.userDao.isRegisterByUserName(username)
+    if (isRegister) {
+      return common.returnFail(t('username.registered'))
+    }
+
+    const { headers } = ctx
+    const ip = headers['remote-host']
+      ? headers['remote-host']
+      : headers['x-forwarded-for']
+
+    try {
+      // 创建用户
+      const userInfo = {
+        password: common.hashPassword(password),
+        username: username,
+        phone: '',
+        email: '',
+        roles: ['common'], // default role is common
+        status: 1, // default status is 1
+        access_token: '',
+        create_ip: ip.toString(),
+        create_time: Date.now(), // add created_at field with current date and time
+        update_time: Date.now()
+      }
+      const uid = await dao.userDao.addUser(userInfo)
+      if (uid) {
+        return common.returnAndPopup(t('account.registerSuccess'))
+      } else {
+        return common.returnFail(t('account.registerFail'))
+      }
+    } catch (e) {
+      //TODO handle the exception
+      console.log('registerByEmail Error:: ', e.message)
+      return common.returnFail(t('account.registerFail'))
+    }
   }
 
   // 通过邮件注册账号
@@ -86,11 +136,10 @@ export default async function (ctx: FunctionContext) {
       // 创建用户
       const userInfo = {
         password: common.hashPassword(password),
+        username: '',
         phone: '',
         email: email,
         roles: ['common'], // default role is common
-        balance: 0,
-        gift_amount: 0,
         status: 1, // default status is 1
         access_token: '',
         create_ip: ip.toString(),
@@ -222,11 +271,10 @@ export default async function (ctx: FunctionContext) {
       // 创建用户
       const userInfo = {
         password: common.hashPassword(password),
+        username: '',
         phone: phone,
         email: '',
         roles: ['common'], // default role is common
-        balance: 0,
-        gift_amount: 0,
         status: 1, // default status is 1
         access_token: '',
         create_ip: ip.toString(),

@@ -5,6 +5,8 @@ const ja = {
   'locale.zh-hant': '繁体中文',
   'locale.ja': '日语',
   'index.title': 'Hello i18n',
+  'username.registered': 'ユーザー名が登録されています',
+  'username.notRegistered': 'ユーザー名は登録されていません',
   'email.error': 'メールボックスフォーマットエラー',
   'email.registered': 'メールボックスは登録されています',
   'email.notRegistered': 'メールボックスは登録されていません',

@@ -5,6 +5,8 @@ const zhHans = {
   'locale.zh-hant': '繁体中文',
   'locale.ja': '日语',
   'index.title': 'Hello i18n',
+  'username.registered': '用户名已被注册',
+  'username.notRegistered': '该用户名未注册',
   'email.error': '邮箱格式错误',
   'email.registered': '邮箱已被注册',
   'email.notRegistered': '该邮箱未注册',
