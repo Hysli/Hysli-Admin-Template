@@ -9,19 +9,31 @@
         </div>
         <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div>
       </div>
-      <n-tabs class="card-tabs" v-model:value="userForm.loginType" size="large" animated
-        pane-wrapper-style="margin: 0 -4px" pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-        @update:value="changeTabs">
+      <n-tabs class="card-tabs" v-if="userForm.loginType != 'username'" v-model:value="userForm.loginType" size="large"
+        animated pane-wrapper-style="margin: 0 -4px"
+        pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;" @update:value="changeTabs">
         <n-tab-pane name="phone" tab="手机号登录"></n-tab-pane>
         <n-tab-pane name="email" tab="邮箱登录"></n-tab-pane>
       </n-tabs>
       <div class="view-account-form">
         <n-form ref="formRef" label-placement="left" size="large" :model="userForm">
+          <n-form-item path="username" v-if="userForm.loginType == 'username'" :rule="[
+            { required: true, message: '请输入用户名', trigger: 'blur' }
+          ]">
+            <n-input v-model:value="userForm.username" placeholder="请输入用户名">
+              <template #prefix>
+                <n-icon size="18" color="#808695">
+                  <PersonOutline />
+                </n-icon>
+              </template>
+            </n-input>
+          </n-form-item>
           <n-form-item path="phone" v-if="userForm.loginType == 'phone'" :rule="[
             { required: true, message: '请输入手机号', trigger: 'blur' },
             { pattern: ruleValid.phone, message: '手机号格式错误', trigger: 'blur' }
           ]">
             <n-input v-model:value="userForm.phone" placeholder="请输入手机号">
+
               <template #prefix>
                 <n-icon size="18" color="#808695">
                   <MobileOutlined />
@@ -34,6 +46,7 @@
             { pattern: ruleValid.email, message: '邮箱格式错误', trigger: 'blur' }
           ]">
             <n-input v-model:value="userForm.email" placeholder="请输入邮箱">
+
               <template #prefix>
                 <n-icon size="18" color="#808695">
                   <EmailOutlined />
@@ -46,6 +59,7 @@
             { min: 6, max: 20, message: '密码长度需6-20位', trigger: 'blur' }
           ]">
             <n-input v-model:value="userForm.password" type="password" showPasswordOn="click" placeholder="请输入密码">
+
               <template #prefix>
                 <n-icon size="18" color="#808695">
                   <LockClosedOutline />
@@ -93,15 +107,18 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/store/modules/user'
 import { useMessage } from 'naive-ui'
-import { LockClosedOutline, LogoGithub } from '@vicons/ionicons5'
+import { PersonOutline, LockClosedOutline, LogoGithub } from '@vicons/ionicons5'
 import { MobileOutlined } from '@vicons/antd'
 import { EmailOutlined } from '@vicons/material'
 import { PageEnum } from '@/enums/pageEnum'
 import { websiteConfig } from '@/config/website.config'
+
+import { useGlobSetting } from '@/hooks/setting'
+const globSetting = useGlobSetting()
 
 const formRef = ref()
 const message = useMessage()
@@ -113,15 +130,21 @@ const ruleValid = reactive({
   email: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
 })
 const userForm = reactive({
+  username: '',
   phone: '',
   email: '',
   password: '',
-  loginType: 'phone'
+  loginType: ''
 })
 
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
+
+onMounted(() => {
+  userForm.loginType = globSetting.enableUserName == 'true' ? 'username' : 'phone'
+  // console.log(globSetting.enableUserName, userForm.loginType)
+})
 
 const handleSubmit = (e) => {
   e.preventDefault()

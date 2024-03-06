@@ -53,6 +53,7 @@ export interface GlobConfig {
   urlPrefix?: string;
   uploadUrl?: string;
   imgUrl?: string;
+  enableUserName?: boolean
 }
 
 export interface GlobEnvConfig {
@@ -68,4 +69,6 @@ export interface GlobEnvConfig {
   VITE_GLOB_UPLOAD_URL?: string;
   //图片前缀地址
   VITE_GLOB_IMG_URL?: string;
+  // 是否启用用户名登录和注册
+  VITE_ENABLE_USERNAME: boolean;
 }

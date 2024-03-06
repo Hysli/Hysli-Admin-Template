@@ -10,6 +10,12 @@ export default async function (ctx: FunctionContext) {
   const { _type, _data } = ctx.body
 
   switch (_type) {
+    case 'username':
+      // 如果 data 中没有 username 或者 password，返回错误
+      if (!_data?.username || !_data?.password) {
+        return common.returnFail('Error: username or password is empty')
+      }
+      return await loginByUserName(_data.username, _data.password)
     case 'email':
       // 如果 data 中没有 email 或者 password，返回错误
       if (!_data?.email || !_data?.password) {
@@ -48,6 +54,53 @@ export default async function (ctx: FunctionContext) {
       return await loginByPhoneCode(_data.phone, _data.code)
     default:
       return common.returnFail('Error: type is error')
+  }
+
+  // 通过用户名、密码登录
+  async function loginByUserName(username: string, password: string) {
+    // 密码格式校验
+    if (!common.validatePassword(password)) {
+      return common.returnFail(t('password.formatError'))
+    }
+
+    try {
+      // 通过用户名查询用户
+      const userData = await dao.userDao.findByUserName(username)
+      if (!userData) {
+        return common.returnFail(t('username.notRegistered'))
+      }
+      // 校验密码是否正确
+      if (userData.password !== common.hashPassword(password)) {
+        return common.returnFail(t('password.error'))
+      }
+      // 校验状态是否已被禁用
+      if (userData.status == 2) {
+        return common.returnFail(t('account.disabled'))
+      }
+
+      const access_token = common.getToken7day(userData._id, userData.roles)
+      const { headers } = ctx
+      const ip = headers['remote-host']
+        ? headers['remote-host']
+        : headers['x-forwarded-for']
+
+      // 更新 access_token
+      await dao.userDao.updateAccessTokenById(userData._id, access_token)
+      // 插入登录日志
+      await dao.userLoginLogDao.addUserLoginLog({
+        uid: userData._id,
+        login_ip: ip.toString(),
+        login_time: Date.now()
+      })
+
+      return common.returnAndPopup(t('account.loginSuccess'), {
+        access_token
+      })
+    } catch (e) {
+      //TODO handle the exception
+      console.log('loginByUserName Error:: ', e.message)
+      return common.returnFail(t('account.loginError'))
+    }
   }
 
   // 通过邮件、密码登录

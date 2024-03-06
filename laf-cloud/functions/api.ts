@@ -6,7 +6,12 @@ import nw from 'nw-lafjs'
 const db = cloud.database()
 
 export default async function (ctx: newFunctionContext) {
-  const lang = (ctx.headers['accept-language'] as string) || 'zh-Hans'
+  let lang = (ctx.headers['accept-language'] as string) || 'zh-Hans'
+  if (!lang.startsWith('zh')) {
+    lang = lang.substring(0, 2)
+  } else {
+    lang = 'zhCN'
+  }
   const t = new utils.i18n(lang).t
   utils.t = t
   setCtx(Object.assign(ctx, utils, { nw, db }))

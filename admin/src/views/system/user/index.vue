@@ -114,9 +114,14 @@ const columns = [
     }
   },
   {
+    title: '用户名',
+    key: 'username',
+    width: 80,
+  },
+  {
     title: '邮箱',
     key: 'email',
-    width: 120,
+    width: 100,
   },
   {
     title: '手机号',

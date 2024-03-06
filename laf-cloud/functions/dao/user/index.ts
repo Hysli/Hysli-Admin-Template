@@ -12,6 +12,27 @@ export class UserDao {
   static _dbName = 'user'
 
   /**
+   * 通过用户名查询用户
+   * @param username 用户名
+   * @returns 返回User实体
+   */
+  static async findByUserName(username: string): Promise<User> {
+    if (!username && !username) return null
+
+    const result = await nw.db.select({
+      dbName: this._dbName,
+      whereJson: {
+        username,
+        status: _.neq(9)
+      },
+      sortArr: [{ name: '_id', type: 'desc' }],
+      pageSize: 1
+    })
+
+    return result?.rows && result.rows.length > 0 ? result.rows[0] : null
+  }
+
+  /**
    * 通过手机号或者邮箱查询用户（邮箱和手机号不能同时为空）
    * @param email 邮箱
    * @param phone 手机号
@@ -52,6 +73,31 @@ export class UserDao {
       cancelAddTime: true
     })
     return result
+  }
+
+  /**
+   * 用户名是否已经注册
+   * @param username 用户名
+   * @param _id 用户id
+   * @returns 未注册返回false，已注册或失败返回true
+   */
+  static async isRegisterByUserName(
+    username: string,
+    _id?: string
+  ): Promise<boolean> {
+    if (!username) return true
+
+    const result = await nw.db.count({
+      dbName: this._dbName,
+      whereJson: {
+        _id: _id ? _.neq(_id) : undefined,
+        username,
+        status: _.neq(9)
+      }
+    })
+    if (result == null) return true
+
+    return result > 0
   }
 
   /**
@@ -300,4 +346,8 @@ export interface User {
    * 更新时间
    */
   update_time: number
+  /**
+   * 用户名
+   */
+  username: string
 }

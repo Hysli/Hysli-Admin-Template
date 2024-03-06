@@ -2,6 +2,9 @@
   <n-grid cols="2 s:2 m:2 l:3 xl:3 2xl:3" responsive="screen">
     <n-grid-item>
       <n-form :label-width="80" :model="state.ruleForm" label-placement="left" require-mark-placement="left">
+        <n-form-item label="用户名" path="username">
+          <n-input placeholder="用户名" v-model:value="state.ruleForm.username" readonly />
+        </n-form-item>
         <n-form-item label="邮箱" path="email">
           <n-input placeholder="邮箱" v-model:value="state.ruleForm.email" readonly />
         </n-form-item>
