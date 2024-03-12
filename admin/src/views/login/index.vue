@@ -4,8 +4,7 @@
     <div class="view-account-container">
       <div class="view-account-top">
         <div class="view-account-top-logo flex justify-center items-center mb-4">
-          <img class="w-16" :src="websiteConfig.loginImage" alt="" />
-          <h3 class="text-5xl ml-4 font-bold">HySLI.AI</h3>
+          <img class="w-64" :src="websiteConfig.loginImage" alt="" />
         </div>
         <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div>
       </div>
