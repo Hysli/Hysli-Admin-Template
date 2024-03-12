@@ -1,0 +1,5 @@
+name: service/menu/auth/updateMenu
+methods:
+  - GET
+  - POST
+tags: []

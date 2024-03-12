@@ -33,10 +33,10 @@ export class MailLogDao {
         to_email: toEmail,
         code,
         type,
-        status: 'success'
+        status: 'success',
       },
       sortArr: [{ name: '_id', type: 'desc' }],
-      pageSize: 1
+      pageSize: 1,
     })
 
     return result?.rows && result.rows.length > 0 ? result.rows[0] : null
@@ -53,7 +53,7 @@ export class MailLogDao {
     const result = await nw.db.add({
       dbName: this._dbName,
       dataJson: entity,
-      cancelAddTime: true
+      cancelAddTime: true,
     })
     return result
   }
@@ -70,11 +70,11 @@ export class MailLogDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
       dataJson: {
-        status
-      }
+        status,
+      },
     })
     return result
   }
@@ -85,7 +85,7 @@ export class MailLogDao {
  */
 export interface MailLog {
   /**
-   * id
+   * 主键id
    */
   _id?: string
   /**
@@ -109,7 +109,7 @@ export interface MailLog {
    */
   send_time: number
   /**
-   * 状态
+   * 状态，pending请求中，fail失败，success成功
    */
   status: string
   /**
@@ -117,7 +117,7 @@ export interface MailLog {
    */
   to_email: string
   /**
-   * 类型
+   * 类型，login登录，register注册
    */
   type: string
   /**

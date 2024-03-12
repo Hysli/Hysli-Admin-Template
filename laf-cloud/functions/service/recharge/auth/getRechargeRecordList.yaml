@@ -1,0 +1,6 @@
+name: service/recharge/auth/getRechargeRecordList
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

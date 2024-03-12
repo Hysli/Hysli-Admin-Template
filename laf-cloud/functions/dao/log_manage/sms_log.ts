@@ -17,7 +17,11 @@ export class SmsLogDao {
    * @param type 类型 {'register':'注册,'login':'登录'}
    * @returns 返回SmsLog实体
    */
-  static async findLastByWhere(phone: string, code: string, type: string): Promise<SmsLog> {
+  static async findLastByWhere(
+    phone: string,
+    code: string,
+    type: string
+  ): Promise<SmsLog> {
     if ((!phone && !code) || !type) return null
 
     const result = await nw.db.select({
@@ -26,10 +30,10 @@ export class SmsLogDao {
         phone,
         code,
         type,
-        status: 'success'
+        status: 'success',
       },
       sortArr: [{ name: '_id', type: 'desc' }],
-      pageSize: 1
+      pageSize: 1,
     })
 
     return result?.rows && result.rows.length > 0 ? result.rows[0] : null
@@ -46,7 +50,7 @@ export class SmsLogDao {
     const result = await nw.db.add({
       dbName: this._dbName,
       dataJson: entity,
-      cancelAddTime: true
+      cancelAddTime: true,
     })
     return result
   }
@@ -63,11 +67,11 @@ export class SmsLogDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
       dataJson: {
-        status
-      }
+        status,
+      },
     })
     return result
   }
@@ -78,7 +82,7 @@ export class SmsLogDao {
  */
 export interface SmsLog {
   /**
-   * id
+   * 主键id
    */
   _id?: string
   /**
@@ -94,11 +98,11 @@ export interface SmsLog {
    */
   send_time: number
   /**
-   * 状态
+   * 状态，pending请求中，fail失败，success成功
    */
   status: string
   /**
-   * 类型
+   * 类型，login登录，register注册
    */
   type: string
   /**

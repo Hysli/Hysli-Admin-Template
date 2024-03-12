@@ -1,0 +1,6 @@
+name: service/user/auth/addUser
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

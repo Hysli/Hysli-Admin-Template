@@ -1,0 +1,6 @@
+name: service/content/article/auth/getArticleList
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

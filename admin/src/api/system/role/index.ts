@@ -6,7 +6,7 @@ import { http } from '@/utils/http/axios'
  */
 export function getRoleList(params?) {
 	return http.request({
-		url: 'service/role/sys/getRoleList',
+		url: 'service/role/auth/getRoleList',
 		method: 'post',
 		params
 	})
@@ -18,7 +18,7 @@ export function getRoleList(params?) {
  */
 export function getRoleInfo(params?) {
 	return http.request({
-		url: 'service/role/sys/getRoleInfo',
+		url: 'service/role/auth/getRoleInfo',
 		method: 'post',
 		params
 	})
@@ -30,7 +30,7 @@ export function getRoleInfo(params?) {
  */
 export function addRole(params?) {
 	return http.request({
-		url: 'service/role/sys/addRole',
+		url: 'service/role/auth/addRole',
 		method: 'post',
 		params
 	})
@@ -42,7 +42,7 @@ export function addRole(params?) {
  */
 export function updateRole(params?) {
 	return http.request({
-		url: 'service/role/sys/updateRole',
+		url: 'service/role/auth/updateRole',
 		method: 'post',
 		params
 	})
@@ -54,19 +54,7 @@ export function updateRole(params?) {
  */
 export function deleteRole(params?) {
 	return http.request({
-		url: 'service/role/sys/deleteRole',
-		method: 'post',
-		params
-	})
-}
-
-/**
- * 角色接口权限设置
- * @param params
- */
-export function apiPermissionSetting(params?) {
-	return http.request({
-		url: 'service/role/sys/apiPermissionSetting',
+		url: 'service/role/auth/deleteRole',
 		method: 'post',
 		params
 	})

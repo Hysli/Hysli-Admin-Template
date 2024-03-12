@@ -3,7 +3,7 @@ const db = cloud.mongo.db
 
 export default async function (ctx: FunctionContext) {
   // 强制初始化数据，如果为 true 会清空原来的数据库重新添加
-  const force = true
+  const force = false
 
   initData.forEach(async (item) => {
     const dbName = item.dbName
@@ -44,48 +44,101 @@ async function addDataToCollectionIfNotExists(dbName, data) {
 
 const initData = [
   {
-    // 系统设置
-    dbName: 'system_settings',
-    data: [
-      {
-        _id: '001',
-        info: {
-          name: 'Hysli-Admin-Template',
-          logo: 'Hysli-Admin-Template.png'
-        },
-        pay: {
-          wechat: {
-            wx_app_id: 'xxx',
-            wx_app_secret: 'xxxxxx',
-            app_id: 'xxx',
-            app_secret: 'xxxxxx',
-            mch_id: 'xxx',
-            mch_key: 'xxxxxx',
-            private_key: 'xxxxxx',
-            public_key: 'xxxxxx',
-            status: true
-          }
-        }
-      }
-    ]
-  },
-  {
     // 用户
     dbName: 'user',
     data: [
       {
         _id: '1001',
+        username: 'superadmin',
         password:
-          '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',
+          '022e531d5e174bbbba9fe41a37270587c73454c76cd674afd2235ecc8356cf45',
         phone: '18888888888',
-        email: '',
+        email: 'superadmin@vip.com',
+        nickname: '超级管理员',
+        avatar: '',
         roles: ['admin'],
+        balance: 0,
+        points: 0,
+        gift_points: 0,
         status: 1,
+        is_super_admin: true,
         access_token: '',
         create_ip: '127.0.0.1',
         create_time: 1697353854918,
-        update_time: 1703878423254
-      }
-    ]
-  }
+        update_time: 1703878423254,
+      },
+    ],
+  },
+  {
+    // 充值模板
+    dbName: 'recharge_template',
+    data: [
+      {
+        _id: '1001',
+        title: '充 100 点赠 10 点',
+        recharge_points: 100,
+        gift_points: 10,
+        sales_price: 1900,
+        status: 1,
+        sort: 0,
+        create_time: 1698414580321,
+        update_time: 1698414580321,
+      },
+      {
+        _id: '1002',
+        title: '充 200 点赠 20 点',
+        recharge_points: 200,
+        gift_points: 20,
+        sales_price: 9900,
+        status: 1,
+        sort: 1,
+        create_time: 1698414580321,
+        update_time: 1698414580321,
+      },
+      {
+        _id: '1003',
+        title: '充 500 点赠 200 点',
+        recharge_points: 500,
+        gift_points: 200,
+        sales_price: 19900,
+        status: 1,
+        sort: 2,
+        create_time: 1698414580321,
+        update_time: 1698414580321,
+      },
+      {
+        _id: '1004',
+        title: '充 1000 点赠 500 点',
+        recharge_points: 1000,
+        gift_points: 500,
+        sales_price: 39900,
+        status: 1,
+        sort: 3,
+        create_time: 1698414580321,
+        update_time: 1698414580321,
+      },
+      {
+        _id: '1005',
+        title: '充 3000 点赠 1000 点',
+        recharge_points: 3000,
+        gift_points: 1000,
+        sales_price: 59900,
+        status: 1,
+        sort: 4,
+        create_time: 1698414580321,
+        update_time: 1698414580321,
+      },
+      {
+        _id: '1006',
+        title: '充 5000 点赠 2000 点',
+        recharge_points: 5000,
+        gift_points: 2000,
+        sales_price: 69900,
+        status: 1,
+        sort: 5,
+        create_time: 1698414580321,
+        update_time: 1698414580321,
+      },
+    ],
+  },
 ]

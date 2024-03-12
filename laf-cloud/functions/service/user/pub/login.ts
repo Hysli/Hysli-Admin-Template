@@ -90,11 +90,11 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
-        login_time: Date.now()
+        login_time: Date.now(),
       })
 
       return common.returnAndPopup(t('account.loginSuccess'), {
-        access_token
+        access_token,
       })
     } catch (e) {
       //TODO handle the exception
@@ -116,7 +116,7 @@ export default async function (ctx: FunctionContext) {
 
     try {
       // 通过邮箱查询用户
-      const userData = await dao.userDao.findByPhoneOrEmail(email, undefined)
+      const userData = await dao.userDao.findByEmail(email)
       if (!userData) {
         return common.returnFail(t('email.notRegistered'))
       }
@@ -141,11 +141,11 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
-        login_time: Date.now()
+        login_time: Date.now(),
       })
 
       return common.returnAndPopup(t('account.loginSuccess'), {
-        access_token
+        access_token,
       })
     } catch (e) {
       //TODO handle the exception
@@ -163,7 +163,7 @@ export default async function (ctx: FunctionContext) {
 
     try {
       // 通过邮箱查询用户
-      const userData = await dao.userDao.findByPhoneOrEmail(email, undefined)
+      const userData = await dao.userDao.findByEmail(email)
       if (!userData) {
         return common.returnFail(t('email.notRegistered'))
       }
@@ -205,7 +205,7 @@ export default async function (ctx: FunctionContext) {
           status: 'pending',
           reason: '',
           send_time: Date.now(),
-          update_time: Date.now()
+          update_time: Date.now(),
         }
         await dao.mailLogDao.addMailLog(mailLogInfo)
 
@@ -233,7 +233,7 @@ export default async function (ctx: FunctionContext) {
 
     try {
       // 通过邮箱查询用户
-      const userData = await dao.userDao.findByPhoneOrEmail(email, undefined)
+      const userData = await dao.userDao.findByEmail(email)
       if (!userData) {
         return common.returnFail(t('email.notRegistered'))
       }
@@ -269,13 +269,13 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
-        login_time: Date.now()
+        login_time: Date.now(),
       })
       // 修改邮件验证码的状态
       await dao.mailLogDao.updateStatusById(mailLogData._id, 'used')
 
       return common.returnAndPopup(t('account.loginSuccess'), {
-        access_token
+        access_token,
       })
     } catch (e) {
       //TODO handle the exception
@@ -297,7 +297,7 @@ export default async function (ctx: FunctionContext) {
 
     try {
       // 通过手机号查询用户
-      const userData = await dao.userDao.findByPhoneOrEmail(undefined, phone)
+      const userData = await dao.userDao.findByPhone(phone)
       if (!userData) {
         return common.returnFail(t('phone.notRegistered'))
       }
@@ -322,11 +322,11 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
-        login_time: Date.now()
+        login_time: Date.now(),
       })
 
       return common.returnAndPopup(t('account.loginSuccess'), {
-        access_token
+        access_token,
       })
     } catch (e) {
       //TODO handle the exception
@@ -344,7 +344,7 @@ export default async function (ctx: FunctionContext) {
 
     try {
       // 通过手机号查询用户
-      const userData = await dao.userDao.findByPhoneOrEmail(undefined, phone)
+      const userData = await dao.userDao.findByPhone(phone)
       if (!userData) {
         return common.returnFail(t('phone.notRegistered'))
       }
@@ -382,7 +382,7 @@ export default async function (ctx: FunctionContext) {
           type: logType,
           status: 'success',
           send_time: Date.now(),
-          update_time: Date.now()
+          update_time: Date.now(),
         }
         await dao.smsLogDao.addSmsLog(smsLogInfo)
 
@@ -410,7 +410,7 @@ export default async function (ctx: FunctionContext) {
 
     try {
       // 通过手机号查询用户
-      const userData = await dao.userDao.findByPhoneOrEmail(undefined, phone)
+      const userData = await dao.userDao.findByPhone(phone)
       if (!userData) {
         return common.returnFail(t('phone.notRegistered'))
       }
@@ -445,13 +445,13 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
-        login_time: Date.now()
+        login_time: Date.now(),
       })
       // 修改短信验证码的状态
       dao.smsLogDao.updateStatusById(smsLogData._id, 'used')
 
       return common.returnAndPopup(t('account.loginSuccess'), {
-        access_token
+        access_token,
       })
     } catch (e) {
       //TODO handle the exception

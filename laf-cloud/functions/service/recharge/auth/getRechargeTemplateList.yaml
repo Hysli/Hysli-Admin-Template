@@ -1,0 +1,6 @@
+name: service/recharge/auth/getRechargeTemplateList
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

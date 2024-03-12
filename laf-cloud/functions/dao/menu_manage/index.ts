@@ -1,5 +1,4 @@
 import nw from 'nw-lafjs'
-import { ObjectId } from 'mongodb'
 
 import cloud from '@lafjs/cloud'
 const db = cloud.database()
@@ -23,17 +22,17 @@ export class MenuManageDao {
       dbName: this._dbName,
       whereJson: {
         _id: _.in(_ids),
-        status: _.eq(1)
+        status: _.eq(1),
       },
       fieldJson: {
         status: 0,
         create_time: 0,
-        update_time: 0
+        update_time: 0,
       },
       sortArr: [
         // { name: '_id', type: 'asc' },
-        { name: 'sort', type: 'asc' }
-      ]
+        { name: 'sort', type: 'asc' },
+      ],
     })
     return result
   }
@@ -49,8 +48,8 @@ export class MenuManageDao {
       whereJson,
       sortArr: [
         // { name: '_id', type: 'asc' },
-        { name: 'sort', type: 'asc' }
-      ]
+        { name: 'sort', type: 'asc' },
+      ],
     })
     return result
   }
@@ -65,7 +64,7 @@ export class MenuManageDao {
 
     const result = await nw.db.findById({
       dbName: this._dbName,
-      id: _id
+      id: _id,
     })
     return result
   }
@@ -73,19 +72,15 @@ export class MenuManageDao {
   /**
    * 添加菜单
    * @param entity 菜单实体
-   * @description  默认用 new ObjectId().toString() 方式生成 _id
    * @returns 成功时返回id值，失败时返回null
    */
   static async addMenu(entity: MenuManage): Promise<any> {
     if (!entity) return null
 
-    if (!entity._id) {
-      entity._id = new ObjectId().toString()
-    }
     const result = await nw.db.add({
       dbName: this._dbName,
       dataJson: entity,
-      cancelAddTime: true
+      cancelAddTime: true,
     })
     return result
   }
@@ -106,9 +101,9 @@ export class MenuManageDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
-      dataJson: entity
+      dataJson: entity,
     })
     // console.log('updateMenu', result)
     return result
@@ -125,12 +120,12 @@ export class MenuManageDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
       dataJson: {
         status: 9,
-        update_time: Date.now()
-      }
+        update_time: Date.now(),
+      },
     })
     return result
   }
@@ -147,8 +142,8 @@ export class MenuManageDao {
       dbName: this._dbName,
       whereJson: {
         parent_id: _.eq(_id),
-        status: _.neq(9)
-      }
+        status: _.neq(9),
+      },
     })
     if (result == null) return true
 
@@ -161,7 +156,7 @@ export class MenuManageDao {
  */
 export interface MenuManage {
   /**
-   * id
+   * 主键id
    */
   _id?: string
   /**
@@ -225,7 +220,7 @@ export interface MenuManage {
    */
   sort: number
   /**
-   * 状态（1已启用，2已禁用，9已删除）
+   * 状态，1已启用，2已禁用，9已删除
    */
   status: number
   /**
@@ -233,7 +228,7 @@ export interface MenuManage {
    */
   title: string
   /**
-   * 类型（1目录，2菜单，3按钮）
+   * 类型，1目录，2菜单，3按钮
    */
   type: number
   /**

@@ -53,7 +53,14 @@ const zhHans = {
   'upload.success': '上传成功',
   'upload.failed': '上传失败',
   'operate.success': '操作成功',
-  'operate.failed': '操作失败'
+  'operate.failed': '操作失败',
+  'operate.noPermission': '抱歉，此账号仅供演示！',
+  'template.notExist': '模板不存在',
+  'rechargeTemplate.titleExist': '该标题已存在',
+  'cdkey.quantityOrPoints': '点数或生成数量需要大于0',
+  'cdkey.disabled': '该密钥已被禁用',
+  'cdkey.expire': '该密钥已过期',
+  'cdkey.used': '该密钥已被使用',
 }
 
 export default zhHans

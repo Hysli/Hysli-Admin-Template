@@ -1,0 +1,5 @@
+name: service/user/auth/updateUser
+methods:
+  - GET
+  - POST
+tags: []

@@ -1,5 +1,0 @@
-name: service/user/sys/deleteUser
-methods:
-  - GET
-  - POST
-tags: []

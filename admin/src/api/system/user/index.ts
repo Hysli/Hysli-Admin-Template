@@ -6,7 +6,7 @@ import { http } from '@/utils/http/axios'
  */
 export function getUserList(params?) {
 	return http.request({
-		url: 'service/user/sys/getUserList',
+		url: 'service/user/auth/getUserList',
 		method: 'post',
 		params
 	})
@@ -18,7 +18,7 @@ export function getUserList(params?) {
  */
 export function addUser(params?) {
   return http.request({
-    url: 'service/user/sys/addUser',
+    url: 'service/user/auth/addUser',
     method: 'post',
     params
   })
@@ -30,7 +30,7 @@ export function addUser(params?) {
  */
 export function updateUser(params?) {
 	return http.request({
-		url: 'service/user/sys/updateUser',
+		url: 'service/user/auth/updateUser',
 		method: 'post',
 		params
 	})
@@ -42,7 +42,7 @@ export function updateUser(params?) {
  */
 export function deleteUser(params?) {
 	return http.request({
-		url: 'service/user/sys/deleteUser',
+		url: 'service/user/auth/deleteUser',
 		method: 'post',
 		params
 	})

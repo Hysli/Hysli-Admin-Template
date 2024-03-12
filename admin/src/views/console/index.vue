@@ -3,16 +3,16 @@
     <n-card :bordered="false">
         <div class="flex items-center">
             <div>
-                <n-avatar circle :size="64" :src="schoolboy" />
+                <n-avatar circle :size="64" :src="state.userInfo.avatar?state.userInfo.avatar:schoolboy" />
             </div>
             <div>
-                <p class="px-4 text-xl">尊敬的 {{ state.userInfo.phone ?? '用户' }}，欢迎登录本系统！</p>
+                <p class="px-4 text-xl">尊敬的 {{ (state.userInfo.nickname ?? state.userInfo.username) ?? state.userInfo.phone }}，欢迎登录本系统！</p>
                 <p class="px-4 text-gray-400 mt10">当前时间 {{ state.currentTime }}</p>
             </div>
         </div>
     </n-card>
     <n-card :segmented="{ content: true }" :bordered="false" size="small">
-        <img src="~@/assets/images/Business.svg" style="margin: auto;" />
+        <img src="@/assets/images/Business.svg" style="margin: auto;" />
     </n-card>
 </template>
 <script lang="ts" setup>
@@ -30,7 +30,7 @@ const state = reactive({
 })
 
 onMounted(() => {
-    console.log(state.userInfo)
+    // console.log(state.userInfo)
     getCurrentTime()
     state.timer = setInterval(getCurrentTime, 1000)
 })

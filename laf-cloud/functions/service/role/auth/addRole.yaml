@@ -1,0 +1,5 @@
+name: service/role/auth/addRole
+methods:
+  - GET
+  - POST
+tags: []

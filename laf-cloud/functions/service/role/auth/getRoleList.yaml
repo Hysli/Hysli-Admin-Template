@@ -1,0 +1,5 @@
+name: service/role/auth/getRoleList
+methods:
+  - GET
+  - POST
+tags: []

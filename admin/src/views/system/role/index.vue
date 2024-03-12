@@ -9,9 +9,9 @@
           clearable></n-select>
       </n-form-item>
       <n-space>
-        <n-button type="primary" @click="reloadTable" v-if="hasPermission(['service/role/sys/getRoleList'])">查询</n-button>
+        <n-button type="primary" @click="reloadTable" v-if="hasPermission(['service/role/auth/getRoleList'])">查询</n-button>
         <!-- <n-button @click="resetQuery">重置</n-button> -->
-        <n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/role/sys/addRole'])">
+        <n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/role/auth/addRole'])">
           <template #icon>
             <n-icon>
               <PlusOutlined />
@@ -26,7 +26,7 @@
     <BasicTableCustom :columns="columns" :request="loadDataTable" :row-key="(row) => row._id" ref="actionRef"
       :actionColumn="actionColumn" :scroll-x="1360" @update:checked-row-keys="onCheckedRow">
       <!-- <template #tableTitle>
-				<n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/role/sys/addRole'])">
+				<n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/role/auth/addRole'])">
 					<template #icon>
 						<n-icon>
 							<PlusOutlined />
@@ -157,11 +157,11 @@ const columns = [
 ]
 
 const authWidth = () => {
-  if (hasPermission(['service/role/sys/updateRole']) && hasPermission(['service/role/sys/deleteRole'])) {
-    return 85
+  if (hasPermission(['service/role/auth/updateRole']) && hasPermission(['service/role/auth/deleteRole'])) {
+    return 70
   }
-  if (hasPermission(['service/role/sys/updateRole']) || hasPermission(['service/role/sys/deleteRole'])) {
-    return 50
+  if (hasPermission(['service/role/auth/updateRole']) || hasPermission(['service/role/auth/deleteRole'])) {
+    return 35
   }
   return 0
 }
@@ -191,7 +191,7 @@ const createActions = (record) => {
       ifShow: () => {
         return true
       },
-      auth: ['service/role/sys/updateRole'],
+      auth: ['service/role/auth/updateRole'],
     },
     {
       label: '删除',
@@ -202,7 +202,7 @@ const createActions = (record) => {
       ifShow: () => {
         return true
       },
-      auth: ['service/role/sys/deleteRole'],
+      auth: ['service/role/auth/deleteRole'],
     },
   ]
 }

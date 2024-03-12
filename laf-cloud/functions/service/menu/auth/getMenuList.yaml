@@ -1,0 +1,5 @@
+name: service/menu/auth/getMenuList
+methods:
+  - GET
+  - POST
+tags: []

@@ -1,0 +1,5 @@
+name: dao/recharge/template
+methods:
+  - GET
+  - POST
+tags: []

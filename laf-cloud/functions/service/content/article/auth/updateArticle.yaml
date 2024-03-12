@@ -1,0 +1,6 @@
+name: service/content/article/auth/updateArticle
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

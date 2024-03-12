@@ -46,14 +46,23 @@ const ja = {
   'delete.failed': '削除に失敗しました',
   'data.notExist': 'データが存在しません',
   'role.canNotDel': 'このロールの下にはすでにユーザーが存在し、削除できません',
-  'menu.canNotDel': 'メニューにはロール権限が割り当てられており、削除できません',
-  'menu.isExistSubMenu': 'このメニューの下にはサブメニューがあり、削除できません',
+  'menu.canNotDel':
+    'メニューにはロール権限が割り当てられており、削除できません',
+  'menu.isExistSubMenu':
+    'このメニューの下にはサブメニューがあり、削除できません',
   'role.codeExist': 'このロールエンコーディングは既に存在します',
   'menu.titleExist': 'メニュー名はすでに存在します',
   'upload.success': 'アップロードに成功しました',
   'upload.failed': 'アップロードに失敗しました',
   'operate.success': '操作が成功しました',
-  'operate.failed': '操作に失敗しました'
+  'operate.failed': '操作に失敗しました',
+  'operate.noPermission': '申し訳ありませんが、このアカウントはデモ専用です！',
+  'template.notExist': 'テンプレートが存在しません',
+  'rechargeTemplate.titleExist': 'タイトルは既に存在します',
+  'cdkey.quantityOrPoints': 'ポイント数または生成数は0より大きい必要があります',
+  'cdkey.disabled': '鍵は無効になっています',
+  'cdkey.expire': '鍵の有効期限が切れています',
+  'cdkey.used': '鍵は使用されています',
 }
 
 export default ja
