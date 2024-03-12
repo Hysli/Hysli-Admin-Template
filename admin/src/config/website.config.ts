@@ -2,8 +2,7 @@ import logoImage from '@/assets/images/logo.png'
 import logoImage_collapsed from '@/assets/images/logo_collapsed.png'
 import logoImage_blue from '@/assets/images/logo_blue.png'
 import logoImage_blue_collapsed from '@/assets/images/logo_blue_collapsed.png'
-// import loginImage from '@/assets/images/account-logo.png'
-import loginImage from '@/assets/images/login_logo.png'
+import loginImage from '@/assets/images/logo_blue.png'
 
 export const websiteConfig = Object.freeze({
   title: '',
