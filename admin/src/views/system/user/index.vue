@@ -9,8 +9,8 @@
           clearable></n-select>
       </n-form-item>
       <n-space>
-        <n-button type="primary" @click="reloadTable" v-if="hasPermission(['service/user/sys/getUserList'])">查询</n-button>
-        <n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/user/sys/addUser'])">
+        <n-button type="primary" @click="reloadTable" v-if="hasPermission(['service/user/auth/getUserList'])">查询</n-button>
+        <n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/user/auth/addUser'])">
           <template #icon>
             <n-icon>
               <PlusOutlined />
@@ -45,7 +45,7 @@
 import { onMounted, ref, reactive, h } from 'vue'
 import { BasicTableCustom, TableAction } from '@/components/Table'
 import { getUserList, deleteUser } from '@/api/system/user'
-import { useDialog, NTag } from 'naive-ui'
+import { useDialog, NTag,NImage } from 'naive-ui'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@vicons/antd'
 import { formatToDateTime } from '@/utils/dateUtil'
 import UserEdit from '@/views/system/user/edit.vue'
@@ -114,9 +114,24 @@ const columns = [
     }
   },
   {
+    title: '头像',
+    key: 'avatar',
+    width: 70,
+    render(row: any) {
+      if (row.avatar) {
+        return h('div', { class: 'cPic' }, h(NImage, { src: row.avatar, 'object-fit': 'fill' }))
+      }
+    }
+  },
+  {
     title: '用户名',
     key: 'username',
     width: 80,
+  },
+  {
+    title: '昵称',
+    key: 'nickname',
+    width: 80
   },
   {
     title: '邮箱',
@@ -126,16 +141,43 @@ const columns = [
   {
     title: '手机号',
     key: 'phone',
-    width: 80
+    width: 90
   },
   {
     title: '角色',
     key: 'roles',
-    width: 100,
+    width: 80,
     render(row) {
       return row.roleList?.map((item) => item.name).join('，')
     }
   },
+	{
+		title: '可提现余额（元）',
+		key: 'balance',
+		width: 100,
+		render(row: any) {
+			if (row.balance == 0) return 0
+			return row.balance ? Number(row.balance / 1000) : '--'
+		}
+	},
+	{
+		title: '可用点数',
+		key: 'points',
+		width: 80,
+		render(row: any) {
+			if (row.points == 0) return 0
+			return row.points ? Number(row.points) : '--'
+		}
+	},
+	{
+		title: '赠送点数',
+		key: 'gift_points',
+		width: 80,
+		render(row: any) {
+			if (row.gift_points == 0) return 0
+			return row.gift_points ? Number(row.gift_points) : '--'
+		}
+	},
   {
     title: '状态',
     key: 'status',
@@ -163,11 +205,11 @@ const columns = [
 ]
 
 const authWidth = () => {
-  if (hasPermission(['service/user/sys/updateUser']) && hasPermission(['service/user/sys/deleteUser'])) {
-    return 85
+  if (hasPermission(['service/user/auth/updateUser']) && hasPermission(['service/user/auth/deleteUser'])) {
+    return 120
   }
-  if (hasPermission(['service/user/sys/updateUser']) || hasPermission(['service/user/sys/deleteUser'])) {
-    return 50
+  if (hasPermission(['service/user/auth/updateUser']) || hasPermission(['service/user/auth/deleteUser'])) {
+    return 80
   }
   return 0
 }
@@ -197,7 +239,7 @@ const createActions = (record) => {
       ifShow: () => {
         return true
       },
-      auth: ['service/user/sys/updateUser'],
+      auth: ['service/user/auth/updateUser'],
     },
     {
       label: '删除',
@@ -211,7 +253,7 @@ const createActions = (record) => {
         return true
       },
       // 根据权限控制是否显示: 有权限，会显示，支持多个
-      auth: ['service/user/sys/deleteUser'],
+      auth: ['service/user/auth/deleteUser'],
     },
   ]
 }
@@ -242,7 +284,7 @@ const handleEdit = (record) => {
 const handleDelete = (record) => {
   dialog.info({
     title: '提示',
-    content: `您想删除用户：【${record.email ? record.email : record.phone}】？`,
+    content: `您想删除用户：【${(record.username ?? record.nickname) ?? record.phone}】？`,
     positiveText: '确定',
     negativeText: '取消',
     onPositiveClick: async () => {
@@ -258,4 +300,13 @@ const handleDelete = (record) => {
   })
 }
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+:deep(.cPic) {
+  width: 42px;
+  height: 42px;
+}
+
+:deep(.n-image) {
+  height: 42px;
+}
+</style>

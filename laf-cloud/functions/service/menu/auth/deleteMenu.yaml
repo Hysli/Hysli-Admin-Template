@@ -1,0 +1,5 @@
+name: service/menu/auth/deleteMenu
+methods:
+  - GET
+  - POST
+tags: []

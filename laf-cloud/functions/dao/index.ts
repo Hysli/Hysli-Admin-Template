@@ -4,6 +4,10 @@ import { MenuManageDao, MenuManage } from '@/dao/menu_manage/index'
 import { RoleManageDao, RoleManage } from '@/dao/role_manage/index'
 import { MailLogDao, MailLog } from '@/dao/log_manage/mail_log'
 import { SmsLogDao, SmsLog } from '@/dao/log_manage/sms_log'
+import { RechargeDao, RechargeTemplate } from '@/dao/recharge/template'
+import { RechargeOrderDao, RechargeOrder } from '@/dao/recharge/order'
+import { RechargeRecordDao, RechargeRecord } from '@/dao/recharge/record'
+import { CdkeyManageDao, CdkeyManage } from '@/dao/cdkey_manage/index'
 
 export const dao: DaoType = {
   userDao: UserDao,
@@ -11,7 +15,11 @@ export const dao: DaoType = {
   smsLogDao: SmsLogDao,
   userLoginLogDao: UserLoginLogDao,
   menuManageDao: MenuManageDao,
-  roleManageDao: RoleManageDao
+  roleManageDao: RoleManageDao,
+  rechargeDao: RechargeDao,
+  rechargeOrderDao: RechargeOrderDao,
+  rechargeRecordDao: RechargeRecordDao,
+  cdkeyManageDao: CdkeyManageDao,
 }
 
 /**
@@ -20,35 +28,36 @@ export const dao: DaoType = {
 export interface DaoType {
   userDao: {
     /**
-   * 通过用户名查询用户
-   * @param username 用户名
-   * @returns 返回User实体
-   */
+     * 通过用户名查询用户
+     * @param username 用户名
+     * @returns 返回User实体
+     */
     findByUserName: (username: string) => Promise<User>
     /**
-     * 通过手机号或者邮箱查询用户（邮箱和手机号不能同时为空）
+     * 通过邮箱查询用户
      * @param email 邮箱
+     * @returns 返回User实体
+     */
+    findByEmail: (email: string) => Promise<User>
+    /**
+     * 通过手机号查询用户
      * @param phone 手机号
      * @returns 返回User实体
      */
-    findByPhoneOrEmail: (email: string, phone: string) => Promise<User>
+    findByPhone: (phone: string) => Promise<User>
     /**
      * 添加用户
      * @param entity 用户实体
-     * @description  默认用 new ObjectId().toString() 方式生成 _id
      * @returns 成功时返回id值，失败时返回null
      */
     addUser: (entity: User) => Promise<any>
     /**
-   * 用户名是否已经注册
-   * @param username 用户名
-   * @param _id 用户id
-   * @returns 未注册返回false，已注册或失败返回true
-   */
-    isRegisterByUserName: (
-      username: string,
-      _id?: string
-    ) => Promise<boolean>
+     * 用户名是否已经注册
+     * @param username 用户名
+     * @param _id 用户id
+     * @returns 未注册返回false，已注册或失败返回true
+     */
+    isRegisterByUserName: (username: string, _id?: string) => Promise<boolean>
     /**
      * 用户邮箱是否已经注册
      * @param email 邮箱
@@ -129,7 +138,6 @@ export interface DaoType {
     /**
      * 添加菜单
      * @param entity 菜单实体
-     * @description  默认用 new ObjectId().toString() 方式生成 _id
      * @returns 成功时返回id值，失败时返回null
      */
     addMenu(entity: MenuManage): Promise<any>
@@ -180,7 +188,6 @@ export interface DaoType {
     /**
      * 添加角色
      * @param entity 角色实体
-     * @description  默认用 new ObjectId().toString() 方式生成 _id
      * @returns 成功时返回id值，失败时返回null
      */
     addRole(entity: RoleManage): Promise<any>
@@ -272,5 +279,145 @@ export interface DaoType {
      * @returns 成功时返回修改记录数，失败返回null
      */
     updateStatusById: (_id: string, status: string) => Promise<number>
+  }
+  rechargeDao: {
+    /**
+     * 校验模板标题是否已存在
+     * @param title 标题
+     * @returns 不存在返回false，已存在或失败返回true
+     */
+    isExistByTemplateTitle: (title: string, _id?: string) => Promise<boolean>
+    /**
+     * 获取充值模板列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param sortArr 排序规则
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @returns 返回充值模板集合
+     */
+    getRechargeTemplateList: (
+      whereJson: any,
+      pageIndex: number,
+      pageSize: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<RechargeTemplate>>
+    /**
+     * 根据主键id获取充值模板信息
+     * @param _id 主键id
+     * @returns 返回RechargeTemplate实体
+     */
+    getInfoById: (_id: string) => Promise<RechargeTemplate>
+    /**
+     * 添加充值模板
+     * @param entity 充值模板实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addRechargeTemplate: (entity: RechargeTemplate) => Promise<any>
+    /**
+     * 修改充值模板
+     * @param entity 充值模板实体
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    updateRechargeTemplate: (entity: RechargeTemplate) => Promise<number>
+    /**
+     * 通过主键id删除充值模板
+     * @param _id 主键id
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    deleteRechargeTemplateById: (_id: string) => Promise<number>
+  }
+  rechargeOrderDao: {
+    /**
+     * 根据主键id获取充值订单信息
+     * @param _id 主键id
+     * @returns 返回RechargeOrder实体
+     */
+    getInfoById: (_id: string) => Promise<RechargeOrder>
+    /**
+     * 添加充值订单
+     * @param entity 充值订单实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addRechargeOrder: (entity: RechargeOrder) => Promise<any>
+    /**
+     * 修改充值订单
+     * @param entity 充值订单实体
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    updateRechargeOrder: (entity: RechargeOrder) => Promise<number>
+  }
+  rechargeRecordDao: {
+    /**
+     * 获取充值记录列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @param sortArr 排序规则
+     * @returns 返回充值记录集合
+     */
+    getRechargeRecordList: (
+      whereJson: any,
+      pageIndex: number,
+      pageSize: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<RechargeRecord>>
+    /**
+     * 添加充值记录
+     * @param entity 充值记录实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addRechargeRecord: (entity: RechargeRecord) => Promise<any>
+  }
+  cdkeyManageDao: {
+    /**
+     * 校验密钥是否已存在
+     * @param name 密钥
+     * @returns 不存在返回false，已存在或失败返回true
+     */
+    isExistBySecretKey: (secretKey: string, _id?: string) => Promise<boolean>
+    /**
+     * 获取卡密列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @param sortArr 排序规则
+     * @returns 返回卡密集合
+     */
+    getCdkeyList: (
+      whereJson: any,
+      pageIndex: number,
+      pageSize: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<CdkeyManage>>
+    /**
+     * 根据主键id获取卡密信息
+     * @param _id 主键id
+     * @returns 返回CdkeyManage实体
+     */
+    getInfoById: (_id: string) => Promise<CdkeyManage>
+    /**
+     * 添加卡密
+     * @param entity 卡密实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addCdkey: (entity: CdkeyManage) => Promise<any>
+    /**
+     * 修改卡密
+     * @param entity 卡密实体
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    updateCdkey: (entity: CdkeyManage) => Promise<number>
+    /**
+     * 通过主键id删除卡密
+     * @param _id 主键id
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    deleteCdkeyById: (_id: string) => Promise<number>
+    /**
+     * 通过密钥查询卡密
+     * @param secretKey 密钥
+     * @returns 返回CdkeyManage实体
+     */
+    findBySecretKey: (secretKey: string) => Promise<CdkeyManage>
   }
 }

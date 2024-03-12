@@ -10,7 +10,7 @@ import { utils } from '@/utils/index'
 const middlewareFunctions = [
   otherMethod,
   // 云路由拦截器
-  authByFuncName
+  authByFuncName,
 ]
 
 let headers,
@@ -37,7 +37,7 @@ async function executeMiddleware(ctx, index: number = 0): Promise<any> {
       user,
       requestId,
       socket,
-      request
+      request,
     } = ctx)
     funcName = request.url
     if (headers.router) {
@@ -72,7 +72,7 @@ function requestRecord() {
     if (key) {
       const { uid } = utils.common.aesDecKey(key) as any
       user = {
-        uid
+        uid,
       }
     }
   }
@@ -93,7 +93,7 @@ function requestRecord() {
     user,
     method,
     req_time: Date.now(),
-    u8_req_time: moment(new Date()).utcOffset(8).format('YYYY/MM/DD HH:mm:ss')
+    u8_req_time: moment(new Date()).utcOffset(8).format('YYYY/MM/DD HH:mm:ss'),
   })
 }
 
@@ -105,7 +105,7 @@ async function authByFuncName(ctx: FunctionContext) {
       ctx.response.status(400)
       ctx.response.json({
         code: 400,
-        error: 'Invalid Input'
+        error: 'Invalid Input',
       })
       return false
     } else {
@@ -118,12 +118,12 @@ async function authByFuncName(ctx: FunctionContext) {
     // 判断 router 是否符合规范
     try {
       const isValidFormat =
-        /^\/service(?:\/[^/]+)*\/(sys|pub|auth)(?:\/[^/]+)*$/.test(router)
+        /^\/service(?:\/[^/]+)*\/(pub|auth)(?:\/[^/]+)*$/.test(router)
       if (isValidFormat) {
         ctx.response.status(400)
         ctx.response.json({
           code: 400,
-          error: 'Invalid Input'
+          error: 'Invalid Input',
         })
         return false
       }
@@ -140,7 +140,7 @@ async function authByFuncName(ctx: FunctionContext) {
               ctx.response.status(401)
               ctx.response.json({
                 code: 401,
-                error: 'Unauthorized'
+                error: 'Unauthorized',
               })
               return false
             }
@@ -148,28 +148,7 @@ async function authByFuncName(ctx: FunctionContext) {
             ctx.response.status(401)
             ctx.response.json({
               code: 401,
-              error: 'Unauthorized'
-            })
-            return false
-          }
-        case 'sys':
-          if (user?.roles.includes('admin')) {
-            const isRoles = await authByRoles(user.roles, router, body)
-            if (isRoles) {
-              return true
-            } else {
-              ctx.response.status(401)
-              ctx.response.json({
-                code: 401,
-                error: 'Unauthorized'
-              })
-              return false
-            }
-          } else {
-            ctx.response.status(401)
-            ctx.response.json({
-              code: 401,
-              error: 'Unauthorized'
+              error: 'Unauthorized',
             })
             return false
           }
@@ -179,7 +158,7 @@ async function authByFuncName(ctx: FunctionContext) {
           ctx.response.status(401)
           ctx.response.json({
             code: 401,
-            error: 'Unauthorized'
+            error: 'Unauthorized',
           })
           return false
       }
@@ -188,7 +167,7 @@ async function authByFuncName(ctx: FunctionContext) {
       ctx.response.status(401)
       ctx.response.json({
         code: 401,
-        error: 'Unauthorized'
+        error: 'Unauthorized',
       })
       return false
     }
@@ -213,8 +192,8 @@ async function authByRoles(roles: string[], router: string, body?: any) {
     const count = await nw.db.count({
       dbName: 'menu_manage',
       whereJson: {
-        permission
-      }
+        permission,
+      },
     })
     if (count == 0) {
       return true
@@ -223,7 +202,7 @@ async function authByRoles(roles: string[], router: string, body?: any) {
     const roleData = await nw.db.selects({
       dbName: 'role_manage',
       whereJson: {
-        code: db.command.in(roles)
+        code: db.command.in(roles),
       },
       foreignDB: [
         {
@@ -234,10 +213,10 @@ async function authByRoles(roles: string[], router: string, body?: any) {
           as: 'roleList',
           limit: 1,
           whereJson: {
-            permission
-          }
-        }
-      ]
+            permission,
+          },
+        },
+      ],
     })
     if (roleData && roleData.rows[0].roleList) {
       return true

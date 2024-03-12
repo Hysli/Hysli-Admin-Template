@@ -64,16 +64,21 @@ export default async function (ctx: FunctionContext) {
     try {
       // 创建用户
       const userInfo = {
-        password: common.hashPassword(password),
         username: username,
+        password: common.hashPassword(password),
         phone: '',
         email: '',
+        nickname: '用户_' + common.generateSecretKey(8),
+        avatar: '',
         roles: ['common'], // default role is common
+        balance: 0,
+        points: 0,
+        gift_points: 0,
         status: 1, // default status is 1
         access_token: '',
         create_ip: ip.toString(),
-        create_time: Date.now(), // add created_at field with current date and time
-        update_time: Date.now()
+        create_time: Date.now(),
+        update_time: Date.now(),
       }
       const uid = await dao.userDao.addUser(userInfo)
       if (uid) {
@@ -135,16 +140,21 @@ export default async function (ctx: FunctionContext) {
     try {
       // 创建用户
       const userInfo = {
-        password: common.hashPassword(password),
         username: '',
+        password: common.hashPassword(password),
         phone: '',
         email: email,
+        nickname: '用户_' + common.generateSecretKey(8),
+        avatar: '',
         roles: ['common'], // default role is common
+        balance: 0,
+        points: 0,
+        gift_points: 0,
         status: 1, // default status is 1
         access_token: '',
         create_ip: ip.toString(),
-        create_time: Date.now(), // add created_at field with current date and time
-        update_time: Date.now()
+        create_time: Date.now(),
+        update_time: Date.now(),
       }
       const uid = await dao.userDao.addUser(userInfo)
       if (uid) {
@@ -209,7 +219,7 @@ export default async function (ctx: FunctionContext) {
           status: 'pending',
           reason: '',
           send_time: Date.now(),
-          update_time: Date.now()
+          update_time: Date.now(),
         }
         await dao.mailLogDao.addMailLog(mailLogInfo)
 
@@ -270,16 +280,21 @@ export default async function (ctx: FunctionContext) {
     try {
       // 创建用户
       const userInfo = {
-        password: common.hashPassword(password),
         username: '',
+        password: common.hashPassword(password),
         phone: phone,
         email: '',
+        nickname: '用户_' + common.generateSecretKey(8),
+        avatar: '',
         roles: ['common'], // default role is common
+        balance: 0,
+        points: 0,
+        gift_points: 0,
         status: 1, // default status is 1
         access_token: '',
         create_ip: ip.toString(),
-        create_time: Date.now(), // add created_at field with current date and time
-        update_time: Date.now()
+        create_time: Date.now(),
+        update_time: Date.now(),
       }
       const uid = await dao.userDao.addUser(userInfo)
       if (uid) {
@@ -340,7 +355,7 @@ export default async function (ctx: FunctionContext) {
           type: logType,
           status: 'success',
           send_time: Date.now(),
-          update_time: Date.now()
+          update_time: Date.now(),
         }
         await dao.smsLogDao.addSmsLog(smsLogInfo)
 

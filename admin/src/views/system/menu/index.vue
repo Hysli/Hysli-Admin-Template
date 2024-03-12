@@ -9,9 +9,9 @@
 					clearable></n-select>
 			</n-form-item>
 			<n-space>
-				<n-button type="primary" @click="reloadTable" v-if="hasPermission(['service/menu/sys/getMenuList'])">查询</n-button>
+				<n-button type="primary" @click="reloadTable" v-if="hasPermission(['service/menu/auth/getMenuList'])">查询</n-button>
 				<!-- <n-button @click="resetQuery">重置</n-button> -->
-				<n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/menu/sys/addMenu'])">
+				<n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/menu/auth/addMenu'])">
 					<template #icon>
 						<n-icon>
 							<PlusOutlined />
@@ -30,7 +30,7 @@
 			default-expand-all
 			@update:checked-row-keys="onCheckedRow">
 			<!-- <template #tableTitle>
-				<n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/menu/sys/addMenu'])">
+				<n-button type="primary" @click="handleAdd" v-if="hasPermission(['service/menu/auth/addMenu'])">
 					<template #icon>
 						<n-icon>
 							<PlusOutlined />
@@ -221,11 +221,11 @@ const menuType = (type: number) => {
 }
 
 const authWidth = () => {
-	if (hasPermission(['service/menu/sys/updateMenu']) && hasPermission(['service/menu/sys/deleteMenu'])) {
-		return 100
+	if (hasPermission(['service/menu/auth/updateMenu']) && hasPermission(['service/menu/auth/deleteMenu'])) {
+		return 105
 	}
-	if (hasPermission(['service/menu/sys/updateMenu']) || hasPermission(['service/menu/sys/deleteMenu'])) {
-		return 65
+	if (hasPermission(['service/menu/auth/updateMenu']) || hasPermission(['service/menu/auth/deleteMenu'])) {
+		return 70
 	}
 	return 0
 }
@@ -255,7 +255,7 @@ const createActions = (record) => {
 			ifShow: () => {
 				return true
 			},
-			auth: ['service/menu/sys/updateMenu'],
+			auth: ['service/menu/auth/updateMenu'],
 		},
 		{
 			label: '删除',
@@ -266,7 +266,7 @@ const createActions = (record) => {
 			ifShow: () => {
 				return true
 			},
-			auth: ['service/menu/sys/deleteMenu'],
+			auth: ['service/menu/auth/deleteMenu'],
 		},
 	]
 }

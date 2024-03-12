@@ -1,0 +1,6 @@
+name: service/cdkey/auth/updateCdkey
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

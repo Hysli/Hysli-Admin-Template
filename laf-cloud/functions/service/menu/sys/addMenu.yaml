@@ -1,5 +1,0 @@
-name: service/menu/sys/addMenu
-methods:
-  - GET
-  - POST
-tags: []

@@ -1,5 +1,4 @@
 import nw from 'nw-lafjs'
-import { ObjectId } from 'mongodb'
 
 import cloud from '@lafjs/cloud'
 const db = cloud.database()
@@ -23,13 +22,13 @@ export class RoleManageDao {
       dbName: this._dbName,
       whereJson: {
         code: _.in(codes),
-        status: _.eq(1)
+        status: _.eq(1),
       },
       fieldJson: {
         status: 0,
         create_time: 0,
-        update_time: 0
-      }
+        update_time: 0,
+      },
     })
     return result
   }
@@ -52,7 +51,7 @@ export class RoleManageDao {
       pageIndex,
       pageSize,
       sortArr: [{ name: '_id', type: 'desc' }],
-      getCount: true
+      getCount: true,
     })
     return result
   }
@@ -67,7 +66,7 @@ export class RoleManageDao {
 
     const result = await nw.db.findById({
       dbName: this._dbName,
-      id: _id
+      id: _id,
     })
     return result
   }
@@ -75,19 +74,15 @@ export class RoleManageDao {
   /**
    * 添加角色
    * @param entity 角色实体
-   * @description  默认用 new ObjectId().toString() 方式生成 _id
    * @returns 成功时返回id值，失败时返回null
    */
   static async addRole(entity: RoleManage): Promise<any> {
     if (!entity) return null
 
-    if (!entity._id) {
-      entity._id = new ObjectId().toString()
-    }
     const result = await nw.db.add({
       dbName: this._dbName,
       dataJson: entity,
-      cancelAddTime: true
+      cancelAddTime: true,
     })
     return result
   }
@@ -105,9 +100,9 @@ export class RoleManageDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
-      dataJson: entity
+      dataJson: entity,
     })
     return result
   }
@@ -123,12 +118,12 @@ export class RoleManageDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
       dataJson: {
         status: 9,
-        update_time: Date.now()
-      }
+        update_time: Date.now(),
+      },
     })
     return result
   }
@@ -145,8 +140,8 @@ export class RoleManageDao {
       dbName: this._dbName,
       whereJson: {
         menu_auth: _.in([menuId]),
-        status: _.neq(9)
-      }
+        status: _.neq(9),
+      },
     })
     if (result == null) return true
 
@@ -165,8 +160,8 @@ export class RoleManageDao {
       dbName: this._dbName,
       whereJson: {
         code: _.eq(code),
-        status: _.neq(9)
-      }
+        status: _.neq(9),
+      },
     })
     return result
   }
@@ -177,13 +172,9 @@ export class RoleManageDao {
  */
 export interface RoleManage {
   /**
-   * id
+   * 主键id
    */
   _id?: string
-  /**
-   * 接口权限集合
-   */
-  api_permissions: string[]
   /**
    * 编码
    */
@@ -195,7 +186,7 @@ export interface RoleManage {
   /**
    * 描述
    */
-  description: string
+  description?: string
   /**
    * 菜单权限id集合
    */
@@ -205,7 +196,7 @@ export interface RoleManage {
    */
   name: string
   /**
-   * 状态（1已启用，2已禁用，9已删除）
+   * 状态，1已启用，2已禁用，9已删除
    */
   status: number
   /**

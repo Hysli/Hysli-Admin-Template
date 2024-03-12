@@ -1,7 +1,5 @@
 import cloud from '@lafjs/cloud'
-// @ts-ignore
 import { _ctx } from '@/global'
-// @ts-ignore
 const { common, t, log, mail, sms, qiniu, dao, db, nw } = _ctx
 const fs = require('fs')
 
@@ -12,6 +10,9 @@ const fs = require('fs')
  */
 export default async function (ctx: FunctionContext) {
   const _files = ctx.files
+  if (ctx.user.roles.indexOf('demo') > -1) {
+    return common.returnFail(t('operate.noPermission'))
+  }
   // console.log('_file', _files)
 
   // 参数校验
@@ -32,7 +33,10 @@ export default async function (ctx: FunctionContext) {
     let fileName = fileInfo.filename
     // 检测文件是否有后缀名，且后缀名和类型是否匹配
     let _mimetype = fileInfo.mimetype.split('/')
-    if (fileInfo.filename.split('.').length < 2 && fileInfo.filename.indexOf(_mimetype[1]) < 0) {
+    if (
+      fileInfo.filename.split('.').length < 2 &&
+      fileInfo.filename.indexOf(_mimetype[1]) < 0
+    ) {
       // 如果上传的图片没有后缀名，则在后面追加类型
       if (_mimetype[0] == 'image') {
         fileName = fileName + '.' + _mimetype[1]
@@ -46,7 +50,7 @@ export default async function (ctx: FunctionContext) {
     // 上传到七牛云
     const res = await qiniu.uploadFile({
       fileName: fileName,
-      fileData: fileData
+      fileData: fileData,
     })
     console.log('七牛云返回结果', res)
     fs.unlinkSync(fileInfo.path) // 删除临时文件
@@ -58,7 +62,7 @@ export default async function (ctx: FunctionContext) {
       fileName: fileName,
       fileUrl: res.fileUrl,
       fileType: fileInfo.mimetype,
-      fileSize: fileInfo.size
+      fileSize: fileInfo.size,
     }
     return common.returnSuccess('upload.success', data)
   } catch (e) {

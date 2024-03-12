@@ -1,0 +1,6 @@
+name: service/cdkey/auth/deleteCdkey
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

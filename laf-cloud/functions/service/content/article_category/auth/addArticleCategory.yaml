@@ -1,0 +1,6 @@
+name: service/content/article_category/auth/addArticleCategory
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

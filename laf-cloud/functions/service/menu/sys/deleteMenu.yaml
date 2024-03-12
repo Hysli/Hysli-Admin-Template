@@ -1,5 +1,0 @@
-name: service/menu/sys/deleteMenu
-methods:
-  - GET
-  - POST
-tags: []

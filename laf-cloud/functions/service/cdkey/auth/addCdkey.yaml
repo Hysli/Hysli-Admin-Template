@@ -1,0 +1,6 @@
+name: service/cdkey/auth/addCdkey
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

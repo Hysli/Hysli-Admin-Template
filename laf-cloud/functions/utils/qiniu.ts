@@ -4,11 +4,11 @@ import moment from 'moment'
 import qiniu from 'qiniu'
 
 // 配置七牛云 Access Key 和 Secret Key
-const accessKey = cloud.env.Qiniu_AccessKey
-const secretKey = cloud.env.Qiniu_SecretKey
+const accessKey = process.env.Qiniu_AccessKey.trim()
+const secretKey = process.env.Qiniu_SecretKey.trim()
 // 配置七牛云存储空间名称和域名
-const bucket = cloud.env.Qiniu_Bucket
-const domain = cloud.env.Qiniu_Domain
+const bucket = process.env.Qiniu_Bucket.trim()
+const domain = process.env.Qiniu_Domain.trim()
 
 /**
  * 上传文件
@@ -20,7 +20,7 @@ export async function uploadFile(obj: any): Promise<any> {
     return null
   }
   const date = moment()
-  let key = 'hysliApi/' + date.format('YYYYMMDD') + '/'
+  let key = 'hysliApi-admin-template/' + date.format('YYYYMMDD') + '/'
   if (!obj.fileName) {
     key += Math.ceil(Math.random() * 1000000000000) + '.jpg'
   } else {
@@ -32,13 +32,13 @@ export async function uploadFile(obj: any): Promise<any> {
     // 初始化七牛云 SDK
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
     const config = new qiniu.conf.Config()
-    config.zone = qiniu.zone[cloud.env.Qiniu_Zone]
+    config.zone = qiniu.zone[process.env.Qiniu_Zone.trim()]
     const formUploader = new qiniu.form_up.FormUploader(config)
     const putExtra = new qiniu.form_up.PutExtra()
 
     // 生成上传凭证
     const options = {
-      scope: bucket + ':' + key
+      scope: bucket + ':' + key,
     }
     const putPolicy = new qiniu.rs.PutPolicy(options)
     const uploadToken = putPolicy.uploadToken(mac)
@@ -103,7 +103,7 @@ export async function getFileInfo(key: string): Promise<any> {
               fileName: key.substr(lastIndex + 1),
               fileUrl: domain + '/' + key,
               fileType: respBody.mimeType,
-              fileSize: respBody.fsize
+              fileSize: respBody.fsize,
             })
           } else {
             // console.log('getFileInfo->respInfo', respInfo)

@@ -1,0 +1,6 @@
+name: dao/recharge/record
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

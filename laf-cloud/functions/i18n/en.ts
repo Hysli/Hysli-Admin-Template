@@ -56,7 +56,15 @@ const en = {
   'upload.success': 'Upload successfully',
   'upload.failed': 'Upload failed',
   'operate.success': 'Operation successful',
-  'operate.failed': 'Operation failed'
+  'operate.failed': 'Operation failed',
+  'operate.noPermission': 'Sorry, this account is for demonstration only!',
+  'template.notExist': 'Template does not exist',
+  'rechargeTemplate.titleExist': 'The title already exists',
+  'cdkey.quantityOrPoints':
+    'The points or generated quantity needs to be greater than 0',
+  'cdkey.disabled': 'The key has been disabled',
+  'cdkey.expire': 'The key has expired',
+  'cdkey.used': 'The key has already been used',
 }
 
 export default en

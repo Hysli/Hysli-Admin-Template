@@ -6,7 +6,7 @@ import { http } from '@/utils/http/axios'
  */
 export function getMenuList(params?) {
 	return http.request({
-		url: 'service/menu/sys/getMenuList',
+		url: 'service/menu/auth/getMenuList',
 		method: 'post',
 		params
 	})
@@ -18,7 +18,7 @@ export function getMenuList(params?) {
  */
 export function addMenu(params?) {
 	return http.request({
-		url: 'service/menu/sys/addMenu',
+		url: 'service/menu/auth/addMenu',
 		method: 'post',
 		params
 	})
@@ -30,7 +30,7 @@ export function addMenu(params?) {
  */
 export function updateMenu(params?) {
 	return http.request({
-		url: 'service/menu/sys/updateMenu',
+		url: 'service/menu/auth/updateMenu',
 		method: 'post',
 		params
 	})
@@ -42,7 +42,7 @@ export function updateMenu(params?) {
  */
 export function deleteMenu(params?) {
 	return http.request({
-		url: 'service/menu/sys/deleteMenu',
+		url: 'service/menu/auth/deleteMenu',
 		method: 'post',
 		params
 	})

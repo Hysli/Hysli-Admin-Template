@@ -1,0 +1,6 @@
+name: service/recharge/auth/deleteRechargeTemplate
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

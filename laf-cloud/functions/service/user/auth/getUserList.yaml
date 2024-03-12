@@ -1,0 +1,5 @@
+name: service/user/auth/getUserList
+methods:
+  - GET
+  - POST
+tags: []

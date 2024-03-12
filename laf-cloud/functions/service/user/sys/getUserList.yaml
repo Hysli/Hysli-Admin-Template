@@ -1,5 +1,0 @@
-name: service/user/sys/getUserList
-methods:
-  - GET
-  - POST
-tags: []

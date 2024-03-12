@@ -1,0 +1,6 @@
+name: service/recharge/auth/addRechargeTemplate
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

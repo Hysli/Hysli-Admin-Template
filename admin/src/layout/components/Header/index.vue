@@ -57,28 +57,23 @@
         </n-tooltip>
       </div>
       <!-- 切换多语言 -->
-      <div class="layout-header-trigger layout-header-trigger-min">
+      <!-- <div class="layout-header-trigger layout-header-trigger-min">
         <n-dropdown trigger="hover" @select="langSelect" :options="langOptions">
           <n-icon size="18" :component="TranslateFilled" />
         </n-dropdown>
-      </div>
+      </div> -->
+      <div class="layout-header-trigger-min">{{ username }}</div>
 
       <!-- 个人中心 -->
       <div class="layout-header-trigger layout-header-trigger-min">
         <n-dropdown trigger="hover" @select="avatarSelect" :options="avatarOptions">
           <div class="avatar">
-            <n-avatar circle :src="schoolboy" />
-            <!-- <n-avatar round :src="schoolboy">
-              {{ username }}
-              <template #icon>
-                <UserOutlined />
-              </template>
-            </n-avatar> -->
+            <n-avatar circle :src="avatar?avatar:schoolboy" />
           </div>
         </n-dropdown>
       </div>
       <!--设置 主题设置器-->
-      <!-- <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">
+      <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">
         <n-tooltip placement="bottom-end">
           <template #trigger>
             <n-icon size="18" style="font-weight: bold">
@@ -87,7 +82,7 @@
           </template>
           <span>项目配置</span>
         </n-tooltip>
-      </div> -->
+      </div>
     </div>
   </div>
   <!--项目配置-->
@@ -133,12 +128,13 @@ export default defineComponent({
     const dialog = useDialog()
     const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting()
 
-    const { name } = userStore?.info || {}
+    const { username, phone, nickname, avatar } = userStore?.info || {}
 
     const drawerSetting = ref()
 
     const state = reactive({
-      username: name ?? '',
+      username: (nickname ?? username) ?? phone,
+      avatar,
       navMode,
       navTheme,
       headerSetting,
@@ -234,17 +230,17 @@ export default defineComponent({
 
     // 图标列表
     const iconList = computed(() => [
-      {
-        icon: 'SearchOutlined',
-        tips: t('buttons.search'),
-      },
-      {
-        icon: 'LockOutlined',
-        tips: '锁屏',
-        eventObject: {
-          click: () => useLockscreen.setLock(true),
-        },
-      },
+      // {
+      //   icon: 'SearchOutlined',
+      //   tips: t('buttons.search'),
+      // },
+      // {
+      //   icon: 'LockOutlined',
+      //   tips: '锁屏',
+      //   eventObject: {
+      //     click: () => useLockscreen.setLock(true),
+      //   },
+      // },
     ])
 
     const langSelect = (key) => {

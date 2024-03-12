@@ -1,0 +1,6 @@
+name: service/content/article/auth/deleteArticle
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

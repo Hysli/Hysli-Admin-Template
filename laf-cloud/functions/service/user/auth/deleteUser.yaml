@@ -1,0 +1,5 @@
+name: service/user/auth/deleteUser
+methods:
+  - GET
+  - POST
+tags: []

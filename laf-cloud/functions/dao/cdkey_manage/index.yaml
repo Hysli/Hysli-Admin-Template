@@ -1,0 +1,5 @@
+name: dao/cdkey_manage/index
+methods:
+  - GET
+  - POST
+tags: []

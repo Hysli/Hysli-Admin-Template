@@ -1,0 +1,5 @@
+name: service/role/auth/deleteRole
+methods:
+  - GET
+  - POST
+tags: []

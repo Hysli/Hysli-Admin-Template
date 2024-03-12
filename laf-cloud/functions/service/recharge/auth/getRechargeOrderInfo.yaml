@@ -1,0 +1,6 @@
+name: service/recharge/auth/getRechargeOrderInfo
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

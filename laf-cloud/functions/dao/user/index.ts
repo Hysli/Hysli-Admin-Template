@@ -1,5 +1,4 @@
 import nw from 'nw-lafjs'
-import { ObjectId } from 'mongodb'
 
 import cloud from '@lafjs/cloud'
 const db = cloud.database()
@@ -23,33 +22,52 @@ export class UserDao {
       dbName: this._dbName,
       whereJson: {
         username,
-        status: _.neq(9)
+        status: _.neq(9),
       },
       sortArr: [{ name: '_id', type: 'desc' }],
-      pageSize: 1
+      pageSize: 1,
     })
 
     return result?.rows && result.rows.length > 0 ? result.rows[0] : null
   }
 
   /**
-   * 通过手机号或者邮箱查询用户（邮箱和手机号不能同时为空）
+   * 通过邮箱查询用户
    * @param email 邮箱
-   * @param phone 手机号
    * @returns 返回User实体
    */
-  static async findByPhoneOrEmail(email: string, phone: string): Promise<User> {
-    if (!email && !phone) return null
+  static async findByEmail(email: string): Promise<User> {
+    if (!email) return null
 
     const result = await nw.db.select({
       dbName: this._dbName,
       whereJson: {
         email,
-        phone,
-        status: _.neq(9)
+        status: _.neq(9),
       },
       sortArr: [{ name: '_id', type: 'desc' }],
-      pageSize: 1
+      pageSize: 1,
+    })
+
+    return result?.rows && result.rows.length > 0 ? result.rows[0] : null
+  }
+
+  /**
+   * 通过手机号查询用户（
+   * @param phone 手机号
+   * @returns 返回User实体
+   */
+  static async findByPhone(phone: string): Promise<User> {
+    if (!phone) return null
+
+    const result = await nw.db.select({
+      dbName: this._dbName,
+      whereJson: {
+        phone,
+        status: _.neq(9),
+      },
+      sortArr: [{ name: '_id', type: 'desc' }],
+      pageSize: 1,
     })
 
     return result?.rows && result.rows.length > 0 ? result.rows[0] : null
@@ -58,19 +76,15 @@ export class UserDao {
   /**
    * 添加用户
    * @param entity 用户实体
-   * @description  默认用 new ObjectId().toString() 方式生成 _id
    * @returns 成功时返回id值，失败时返回null
    */
   static async addUser(entity: User): Promise<any> {
     if (!entity) return null
 
-    if (!entity._id) {
-      entity._id = new ObjectId().toString()
-    }
     const result = await nw.db.add({
       dbName: this._dbName,
       dataJson: entity,
-      cancelAddTime: true
+      cancelAddTime: true,
     })
     return result
   }
@@ -92,8 +106,8 @@ export class UserDao {
       whereJson: {
         _id: _id ? _.neq(_id) : undefined,
         username,
-        status: _.neq(9)
-      }
+        status: _.neq(9),
+      },
     })
     if (result == null) return true
 
@@ -117,8 +131,8 @@ export class UserDao {
       whereJson: {
         _id: _id ? _.neq(_id) : undefined,
         email,
-        status: _.neq(9)
-      }
+        status: _.neq(9),
+      },
     })
     if (result == null) return true
 
@@ -142,8 +156,8 @@ export class UserDao {
       whereJson: {
         _id: _id ? _.neq(_id) : undefined,
         phone,
-        status: _.neq(9)
-      }
+        status: _.neq(9),
+      },
     })
     if (result == null) return true
 
@@ -165,11 +179,11 @@ export class UserDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
       dataJson: {
-        access_token: accessToken
-      }
+        access_token: accessToken,
+      },
     })
     return result
   }
@@ -190,8 +204,8 @@ export class UserDao {
         access_token: 0,
         create_ip: 0,
         create_time: 0,
-        update_time: 0
-      }
+        update_time: 0,
+      },
     })
     return result
   }
@@ -216,7 +230,7 @@ export class UserDao {
       sortArr: [{ name: '_id', type: 'desc' }],
       fieldJson: {
         password: 0,
-        access_token: 0
+        access_token: 0,
       },
       getCount: true,
       foreignDB: [
@@ -230,11 +244,11 @@ export class UserDao {
             menu_auth: 0,
             status: 0,
             create_time: 0,
-            update_time: 0
+            update_time: 0,
           },
-          limit: 10
-        }
-      ]
+          limit: 10,
+        },
+      ],
     })
     return result
   }
@@ -252,9 +266,9 @@ export class UserDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
-      dataJson: entity
+      dataJson: entity,
     })
     // console.log('updateRole', result)
     return result
@@ -271,12 +285,12 @@ export class UserDao {
     const result = await nw.db.update({
       dbName: this._dbName,
       whereJson: {
-        _id
+        _id,
       },
       dataJson: {
         status: 9,
-        update_time: Date.now()
-      }
+        update_time: Date.now(),
+      },
     })
     return result
   }
@@ -293,8 +307,8 @@ export class UserDao {
       dbName: this._dbName,
       whereJson: {
         roles: _.in([roleCode]),
-        status: _.neq(9)
-      }
+        status: _.neq(9),
+      },
     })
     if (result == null) return true
 
@@ -307,13 +321,21 @@ export class UserDao {
  */
 export interface User {
   /**
-   * id
+   * 主键id
    */
   _id?: string
   /**
    * 用户token
    */
   access_token: string
+  /**
+   * 头像
+   */
+  avatar?: string
+  /**
+   * 可提现余额（分）
+   */
+  balance: number | null
   /**
    * 创建IP
    */
@@ -327,7 +349,19 @@ export interface User {
    */
   email: string
   /**
-   * 密码
+   * 赠送点数
+   */
+  gift_points: number | null
+  /**
+   * 是否超级管理员
+   */
+  is_super_admin?: boolean
+  /**
+   * 昵称
+   */
+  nickname?: string
+  /**
+   * 密码，初始密码123456
    */
   password: string
   /**
@@ -335,11 +369,15 @@ export interface User {
    */
   phone: string
   /**
-   * 角色
+   * 可用点数
+   */
+  points: number | null
+  /**
+   * 角色，['admin']或['common']
    */
   roles: string[]
   /**
-   * 状态（1已启用，2已禁用，9已删除）
+   * 状态，1已启用，2已禁用，9已删除
    */
   status: number
   /**
