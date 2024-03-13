@@ -63,6 +63,8 @@ const ja = {
   'cdkey.disabled': '鍵は無効になっています',
   'cdkey.expire': '鍵の有効期限が切れています',
   'cdkey.used': '鍵は使用されています',
+  'name.isExist': '名前は既に存在します',
+  'title.isExist': 'タイトルは既に存在します',
 }
 
 export default ja
