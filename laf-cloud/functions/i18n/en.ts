@@ -65,6 +65,8 @@ const en = {
   'cdkey.disabled': 'The key has been disabled',
   'cdkey.expire': 'The key has expired',
   'cdkey.used': 'The key has already been used',
+  'name.isExist': 'The name already exists',
+  'title.isExist': 'The title already exists',
 }
 
 export default en

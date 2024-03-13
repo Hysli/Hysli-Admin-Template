@@ -8,6 +8,14 @@ import { RechargeDao, RechargeTemplate } from '@/dao/recharge/template'
 import { RechargeOrderDao, RechargeOrder } from '@/dao/recharge/order'
 import { RechargeRecordDao, RechargeRecord } from '@/dao/recharge/record'
 import { CdkeyManageDao, CdkeyManage } from '@/dao/cdkey_manage/index'
+import {
+  ArticleCategoryDao,
+  ArticleCategory,
+} from '@/dao/content_manage/article_category/index'
+import {
+  ArticleManageDao,
+  ArticleManage,
+} from '@/dao/content_manage/article/index'
 
 export const dao: DaoType = {
   userDao: UserDao,
@@ -20,6 +28,8 @@ export const dao: DaoType = {
   rechargeOrderDao: RechargeOrderDao,
   rechargeRecordDao: RechargeRecordDao,
   cdkeyManageDao: CdkeyManageDao,
+  articleCategoryDao: ArticleCategoryDao,
+  articleManageDao: ArticleManageDao,
 }
 
 /**
@@ -419,5 +429,97 @@ export interface DaoType {
      * @returns 返回CdkeyManage实体
      */
     findBySecretKey: (secretKey: string) => Promise<CdkeyManage>
+  }
+  articleCategoryDao: {
+    /**
+     * 校验名称是否已存在
+     * @param name 名称
+     * @returns 不存在返回false，已存在或失败返回true
+     */
+    isExistByName: (name: string, _id?: string) => Promise<boolean>
+    /**
+     * 获取文章分类列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @param sortArr 排序规则
+     * @returns 返回文章分类集合
+     */
+    getArticleCategoryList: (
+      whereJson: any,
+      pageIndex: number,
+      pageSize: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<ArticleCategory>>
+    /**
+     * 根据主键id获取文章分类信息
+     * @param _id 主键id
+     * @returns 返回ArticleCategory实体
+     */
+    getInfoById: (_id: string) => Promise<ArticleCategory>
+    /**
+     * 添加文章分类
+     * @param entity 文章分类实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addArticleCategory: (entity: ArticleCategory) => Promise<any>
+    /**
+     * 修改文章分类
+     * @param entity 文章分类
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    updateArticleCategory: (entity: ArticleCategory) => Promise<number>
+    /**
+     * 通过主键id删除文章分类
+     * @param _id 主键id
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    deleteArticleCategoryById: (_id: string) => Promise<number>
+  }
+  articleManageDao: {
+    /**
+     * 校验标题是否已存在
+     * @param title 标题
+     * @returns 不存在返回false，已存在或失败返回true
+     */
+    isExistByTitle: (title: string, _id?: string) => Promise<boolean>
+    /**
+     * 获取文章列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @param sortArr 排序条件集合
+     * @returns 返回文章集合
+     */
+    getArticleList: (
+      whereJson: any,
+      pageIndex?: number,
+      pageSize?: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<ArticleManage>>
+    /**
+     * 根据主键id获取文章信息
+     * @param _id 主键id
+     * @returns 返回ArticleManage实体
+     */
+    getInfoById: (_id: string) => Promise<ArticleManage>
+    /**
+     * 添加文章
+     * @param entity 文章实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addArticle: (entity: ArticleManage) => Promise<any>
+    /**
+     * 修改文章
+     * @param entity 文章实体
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    updateArticle: (entity: ArticleManage) => Promise<number>
+    /**
+     * 通过主键id删除文章
+     * @param _id 主键id
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    deleteArticleById: (_id: string) => Promise<number>
   }
 }

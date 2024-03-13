@@ -1,0 +1,6 @@
+name: dao/content_manage/article/index
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

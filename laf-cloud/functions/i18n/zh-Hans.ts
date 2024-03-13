@@ -61,6 +61,8 @@ const zhHans = {
   'cdkey.disabled': '该密钥已被禁用',
   'cdkey.expire': '该密钥已过期',
   'cdkey.used': '该密钥已被使用',
+  'name.isExist': '该名称已存在',
+  'title.isExist': '该标题已存在',
 }
 
 export default zhHans
