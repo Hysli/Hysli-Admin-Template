@@ -1,0 +1,6 @@
+name: dao/pay_config/index
+desc: ''
+methods:
+  - GET
+  - POST
+tags: []

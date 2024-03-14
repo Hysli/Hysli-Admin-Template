@@ -31,7 +31,7 @@ export class RechargeRecordDao {
       pageSize,
       sortArr:
         !sortArr || sortArr.length == 0
-          ? [{ name: 'update_time', type: 'desc' }]
+          ? [{ name: 'create_time', type: 'desc' }]
           : sortArr,
       getCount: true,
       foreignDB: [

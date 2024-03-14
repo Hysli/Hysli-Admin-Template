@@ -1,0 +1,6 @@
+name: service/pay_config/auth/updatePayConfig
+desc: ''
+methods:
+  - GET
+  - POST
+tags: []

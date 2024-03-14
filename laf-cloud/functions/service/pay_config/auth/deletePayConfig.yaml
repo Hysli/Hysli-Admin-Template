@@ -1,0 +1,6 @@
+name: service/pay_config/auth/deletePayConfig
+desc: ''
+methods:
+  - GET
+  - POST
+tags: []

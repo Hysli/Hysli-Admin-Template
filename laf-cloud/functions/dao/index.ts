@@ -16,6 +16,7 @@ import {
   ArticleManageDao,
   ArticleManage,
 } from '@/dao/content_manage/article/index'
+import { PayConfigDao, PayConfig } from '@/dao/pay_config/index'
 
 export const dao: DaoType = {
   userDao: UserDao,
@@ -30,6 +31,7 @@ export const dao: DaoType = {
   cdkeyManageDao: CdkeyManageDao,
   articleCategoryDao: ArticleCategoryDao,
   articleManageDao: ArticleManageDao,
+  payConfigDao: PayConfigDao,
 }
 
 /**
@@ -521,5 +523,57 @@ export interface DaoType {
      * @returns 成功时返回修改记录数，失败返回null
      */
     deleteArticleById: (_id: string) => Promise<number>
+  }
+  payConfigDao: {
+    /**
+     * 校验类型是否已存在
+     * @param type 类型
+     * @returns 不存在返回false，已存在或失败返回true
+     */
+    isExistByType: (type: number, _id?: string) => Promise<boolean>
+    /**
+     * 获取支付配置列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @param sortArr 排序规则
+     * @returns 返回支付配置集合
+     */
+    getPayConfigList: (
+      whereJson: any,
+      pageIndex: number,
+      pageSize: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<PayConfig>>
+    /**
+     * 根据主键id获取支付配置信息
+     * @param _id 主键id
+     * @returns 返回ArticleCategory实体
+     */
+    getInfoById: (_id: string) => Promise<PayConfig>
+    /**
+     * 通过类型查询支付配置
+     * @param type 类型
+     * @returns 返回PayConfig实体
+     */
+    findByType: (type: number) => Promise<PayConfig>
+    /**
+     * 添加支付配置
+     * @param entity 支付配置实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addPayConfig: (entity: PayConfig) => Promise<any>
+    /**
+     * 修改支付配置
+     * @param entity 支付配置实体
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    updatePayConfig: (entity: PayConfig) => Promise<number>
+    /**
+     * 通过主键id删除支付配置
+     * @param _id 主键id
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    deletePayConfigById: (_id: string) => Promise<number>
   }
 }
