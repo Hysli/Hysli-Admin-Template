@@ -82,28 +82,23 @@ const columns = [
     key: 'user',
     width: 100,
     render(row: any) {
-      if (row.user?.phone) return row.user.phone
-      if (row.user?.email) return row.user.email
-      return ''
+      let msg = ''
+      if (row.user?.nickname) msg += row.user.nickname
+      else if (row.user?.username) msg += (msg ? '-' : '') + row.user.username
+      else if (row.user?.phone) msg = row.user.phone
+      else if (row.user?.email) msg = row.user.email
+      return msg
     }
   },
   {
-    title: '充值金额（元）',
-    key: 'recharge_amount',
-    width: 80,
-    render(row: any) {
-      if (row.recharge_amount == 0) return 0
-      return row.recharge_amount ? Number(row.recharge_amount / 1000) : ''
-    }
+    title: '充值点数',
+    key: 'recharge_points',
+    width: 80
   },
   {
-    title: '赠送金额（元）',
-    key: 'gift_amount',
-    width: 80,
-    render(row: any) {
-      if (row.gift_amount == 0) return 0
-      return row.gift_amount ? Number(row.gift_amount / 1000) : ''
-    }
+    title: '赠送点数',
+    key: 'gift_points',
+    width: 80
   },
   {
     title: '支付金额（元）',
@@ -111,7 +106,7 @@ const columns = [
     width: 80,
     render(row: any) {
       if (row.pay_amount == 0) return 0
-      return row.pay_amount ? Number(row.pay_amount / 1000) : ''
+      return row.pay_amount ? Number(row.pay_amount / 100) : ''
     }
   },
   {

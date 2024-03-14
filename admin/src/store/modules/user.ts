@@ -99,7 +99,7 @@ export const useUserStore = defineStore({
     // 登出
     async logout() {
       this.setPermissions([])
-      this.setUserInfo({ name: '', email: '', phone: '' })
+      this.setUserInfo({ username: '', email: '', phone: '', nickname: '', avatar: '' })
       storage.remove(ACCESS_TOKEN)
       storage.remove(CURRENT_USER)
       storage.remove(TABS_ROUTES)
