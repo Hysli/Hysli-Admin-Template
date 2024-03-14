@@ -17,7 +17,7 @@ export default async function (ctx: FunctionContext) {
   // 如果 data 中没有 uid or templateId，返回错误
   if (
     !ctx.user.uid ||
-    _data?.template_id ||
+    !_data?.template_id ||
     _data?.pay_method == null ||
     _data?.pay_method == undefined
   ) {
@@ -35,7 +35,7 @@ export default async function (ctx: FunctionContext) {
     const orderInfo = {
       uid: ctx.user.uid,
       order_desc: title,
-      order_amount: templateData.sales_price * 100, // 单位：分
+      order_amount: templateData.sales_price, // 单位：分
       recharge_points: templateData.recharge_points,
       gift_points: templateData.gift_points,
       recharge_template_id: templateData._id,
@@ -55,7 +55,7 @@ export default async function (ctx: FunctionContext) {
       const prepayInfo = {
         orderDesc: title,
         orderNo: rid,
-        orderAmount: templateData.sales_price * 100,
+        orderAmount: templateData.sales_price,
         requestIp: ctx.headers['remote-host']
           ? ctx.headers['remote-host']
           : ctx.headers['x-forwarded-for'],

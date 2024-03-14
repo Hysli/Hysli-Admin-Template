@@ -1,7 +1,7 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
 const _ = cloud.database().command
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, t, log, mail, sms, pay, dao, db, nw } = _ctx
 
 // 初始化
 const Pay = require('wechatpay-node-v3-laf')
@@ -15,15 +15,20 @@ let key
 export default async function (ctx: FunctionContext) {
   const { resource } = ctx.body
   const { ciphertext, associated_data, nonce } = resource
-  // console.log('Native 支付回调通知内容', ctx.body)
+  console.log('Native 支付回调通知内容', ctx.body)
 
   try {
-    const pay = await WxNativePayInfo()
+    const pay = await WxPayInfo()
     if (!pay) {
       console.log('Native 支付回调异常', '未获取到支付配置')
       return
     }
-    const result = await pay.decipher_gcm(ciphertext, associated_data, nonce, key)
+    const result = await pay.decipher_gcm(
+      ciphertext,
+      associated_data,
+      nonce,
+      key
+    )
     console.log('Native 支付回调-->解密', result)
     if (result.trade_state == 'SUCCESS') {
       // 支付成功的逻辑
@@ -35,30 +40,31 @@ export default async function (ctx: FunctionContext) {
 }
 
 /**
- * 获取微信 Native 支付信息
+ * 获取微信支付信息
  * @returns
  */
-async function WxNativePayInfo() {
-  const res = await db.collection('system_settings').where({ _id: '001' }).getOne()
+async function WxPayInfo() {
+  const res = await db
+    .collection('pay_config')
+    .where({ type: 10, status: 1 })
+    .getOne()
   if (
     !res.data ||
-    !res.data.pay ||
-    !res.data.pay.wechat ||
-    !res.data.pay.wechat.wx_app_id ||
-    !res.data.pay.wechat.mch_id ||
-    !res.data.pay.wechat.public_key ||
-    !res.data.pay.wechat.private_key
+    !res.data.app_id ||
+    !res.data.mch_id ||
+    !res.data.public_key ||
+    !res.data.private_key
   ) {
     return null
   }
 
   const pay = new Pay({
-    appid: res.data.pay.wechat.wx_app_id, // 认证服务号 appid
-    mchid: res.data.pay.wechat.mch_id, //  绑定该认证服务号的微信支付商户号
-    publicKey: res.data.pay.wechat.public_key, // V3 公钥 apiclient_cert.pem
-    privateKey: res.data.pay.wechat.private_key // V3 秘钥 apiclient_key.pem
+    appid: res.data.app_id, // 认证服务号 appid
+    mchid: res.data.mch_id, //  绑定该认证服务号的微信支付商户号
+    publicKey: res.data.public_key, // V3 公钥 apiclient_cert.pem
+    privateKey: res.data.private_key, // V3 秘钥 apiclient_key.pem
   })
-  key = res.data.pay.wechat.mch_key
+  key = res.data.mch_key
   return pay
 }
 
@@ -89,7 +95,7 @@ async function updateOrderStatus(param) {
 
   // 修改订单支付状态
   orderData.pay_status = 'success'
-  orderData.pay_amount = param.amount ? Number(param.amount.total) * 10 : null
+  orderData.pay_amount = param.amount ? Number(param.amount.total) : null
   orderData.pay_time = Date.now()
   orderData.transaction_id = param.transaction_id
   orderData.callback_detail = JSON.stringify(param)
@@ -99,20 +105,20 @@ async function updateOrderStatus(param) {
     // 添加充值记录
     let rechargeRecord = {
       uid: orderData.uid,
-      recharge_amount: orderData.recharge_amount,
-      gift_amount: orderData.gift_amount,
+      recharge_points: orderData.recharge_points,
+      gift_points: orderData.gift_points,
       pay_amount: orderData.pay_amount,
       order_id: param.out_trade_no,
       cdkey_id: '',
-      create_time: Date.now()
+      create_time: Date.now(),
     }
-    await dao.userRechargeRecordDao.addRechargeRecord(rechargeRecord)
+    await dao.rechargeRecordDao.addRechargeRecord(rechargeRecord)
 
     // 更新用户余额或赠送金额
     let userInfo = await dao.userDao.getInfoById(orderData.uid)
     if (userInfo) {
-      userInfo.gift_amount = _.inc(orderData.gift_amount)
-      userInfo.balance = _.inc(orderData.recharge_amount)
+      userInfo.points = _.inc(orderData.recharge_points)
+      userInfo.gift_points = _.inc(orderData.gift_points)
       userInfo.update_time = Date.now()
       await dao.userDao.updateUser(userInfo)
     }
