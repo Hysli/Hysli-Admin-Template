@@ -63,6 +63,7 @@ const zhHans = {
   'cdkey.used': '该密钥已被使用',
   'name.isExist': '该名称已存在',
   'title.isExist': '该标题已存在',
+  'type.isExist': '该类型已存在',
 }
 
 export default zhHans

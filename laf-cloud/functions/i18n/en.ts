@@ -67,6 +67,7 @@ const en = {
   'cdkey.used': 'The key has already been used',
   'name.isExist': 'The name already exists',
   'title.isExist': 'The title already exists',
+  'type.isExist': 'The type already exists',
 }
 
 export default en
