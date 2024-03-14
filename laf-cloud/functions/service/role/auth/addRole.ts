@@ -1,6 +1,6 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw } = _ctx
+const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
 
 /**
  * 添加角色

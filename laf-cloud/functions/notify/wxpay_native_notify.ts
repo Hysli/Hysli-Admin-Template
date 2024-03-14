@@ -1,7 +1,7 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
 const _ = cloud.database().command
-const { common, t, log, mail, sms, pay, dao, db, nw } = _ctx
+const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
 
 // 初始化
 const Pay = require('wechatpay-node-v3-laf')

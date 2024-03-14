@@ -3,6 +3,7 @@ import { newFunctionContext } from '@/utils/type'
 import { setCtx } from '@/global'
 import { utils } from '@/utils/index'
 import nw from 'nw-lafjs'
+import console from '@/utils/console'
 const db = cloud.database()
 
 export default async function (ctx: newFunctionContext) {
@@ -14,7 +15,7 @@ export default async function (ctx: newFunctionContext) {
   }
   const t = new utils.i18n(lang).t
   utils.t = t
-  setCtx(Object.assign(ctx, utils, { nw, db }))
+  setCtx(Object.assign(ctx, utils, { nw, db, console }))
   if (!ctx.headers['router']) {
     ctx.response.status(500)
     ctx.response.send('Error')
