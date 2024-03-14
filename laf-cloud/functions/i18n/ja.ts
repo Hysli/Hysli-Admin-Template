@@ -65,6 +65,7 @@ const ja = {
   'cdkey.used': '鍵は使用されています',
   'name.isExist': '名前は既に存在します',
   'title.isExist': 'タイトルは既に存在します',
+  'type.isExist': 'このタイプは既に存在します',
 }
 
 export default ja
