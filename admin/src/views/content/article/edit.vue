@@ -152,7 +152,7 @@ const openModal = (record: any) => {
   state.uploading = false
   if (Object.keys(record).length > 0) {
     state.ruleForm = JSON.parse(JSON.stringify(record))
-    delete state.ruleForm.informationTag
+    delete state.ruleForm.articleCategory
     if (state.ruleForm.picture) {
       state.pictureList = [
         {
