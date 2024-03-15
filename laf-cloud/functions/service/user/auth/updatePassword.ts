@@ -12,7 +12,7 @@ const { common, t, log, mail, sms, dao, db, nw } = _ctx
 export default async function (ctx: FunctionContext) {
   const _data = ctx.body
   if (ctx.user.roles.indexOf('demo') > -1) {
-    return common.returnFail(t('operate.noPermission'))
+    return common.returnFail("t('operate.noPermission')")
   }
 
   // 如果 data 中没有 password，返回错误
@@ -22,11 +22,11 @@ export default async function (ctx: FunctionContext) {
   // 校验用户是否存在
   let userData = await dao.userDao.getInfoById(ctx.user.uid)
   if (!userData) {
-    return common.returnFail(t('data.notExist'))
+    return common.returnFail("t('data.notExist')")
   }
   // 密码格式校验
   if (_data.password && !common.validatePassword(_data.password)) {
-    return common.returnFail(t('password.formatError'))
+    return common.returnFail("t('password.formatError')")
   }
 
   try {
@@ -36,13 +36,13 @@ export default async function (ctx: FunctionContext) {
 
     const result = await dao.userDao.updateUser(userData)
     if (result && result > 0) {
-      return common.returnAndPopup(t('update.success'))
+      return common.returnAndPopup("t('update.success')")
     } else {
-      return common.returnFail(t('update.failed'))
+      return common.returnFail("t('update.failed')")
     }
   } catch (e) {
     //TODO handle the exception
     console.log('updatePassword Error:: ', e.message)
-    return common.returnFail(t('update.failed'))
+    return common.returnFail("t('update.failed')")
   }
 }

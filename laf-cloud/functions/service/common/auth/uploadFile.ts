@@ -11,7 +11,7 @@ const fs = require('fs')
 export default async function (ctx: FunctionContext) {
   const _files = ctx.files
   if (ctx.user.roles.indexOf('demo') > -1) {
-    return common.returnFail(t('operate.noPermission'))
+    return common.returnFail("t('operate.noPermission')")
   }
   // console.log('_file', _files)
 
@@ -55,7 +55,7 @@ export default async function (ctx: FunctionContext) {
     console.log('七牛云返回结果', res)
     fs.unlinkSync(fileInfo.path) // 删除临时文件
     if (!res || !res.fileUrl) {
-      return common.returnFail(t('upload.failed'))
+      return common.returnFail("t('upload.failed')")
     }
 
     let data = {
@@ -68,6 +68,6 @@ export default async function (ctx: FunctionContext) {
   } catch (e) {
     //TODO handle the exception
     console.log('uploadFiles Error:: ', e.message)
-    return common.returnFail(t('upload.failed'))
+    return common.returnFail("t('upload.failed')")
   }
 }

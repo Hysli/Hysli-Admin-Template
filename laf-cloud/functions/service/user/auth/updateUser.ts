@@ -1,6 +1,6 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, log, mail, sms, pay, dao, db, nw, console } = _ctx
 
 /**
  * 修改用户
@@ -10,7 +10,7 @@ const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
 export default async function (ctx: FunctionContext) {
   const _data = ctx.body
   if (ctx.user.roles.indexOf('demo') > -1) {
-    return common.returnFail(t('operate.noPermission'))
+    return common.returnFail("t('operate.noPermission')")
   }
 
   // 如果 data 中没有 name 或者 code，返回错误
@@ -24,7 +24,7 @@ export default async function (ctx: FunctionContext) {
   // 校验用户是否存在
   let userData = await dao.userDao.getInfoById(_data._id)
   if (!userData) {
-    return common.returnFail(t('data.notExist'))
+    return common.returnFail("t('data.notExist')")
   }
   // 校验用户名是否已被使用
   const isUserName = await dao.userDao.isRegisterByUserName(
@@ -32,29 +32,29 @@ export default async function (ctx: FunctionContext) {
     userData._id
   )
   if (isUserName) {
-    return common.returnFail(t('username.registered'))
+    return common.returnFail("t('username.registered')")
   }
   // 邮箱格式校验
   if (_data.email && !common.isEmail(_data.email)) {
-    return common.returnFail(t('email.error'))
+    return common.returnFail("t('email.error')")
   }
   // 校验邮箱是否已被使用
   const isEmail = await dao.userDao.isRegisterByEmail(_data.email, userData._id)
   if (_data.email && isEmail) {
-    return common.returnFail(t('email.registered'))
+    return common.returnFail("t('email.registered')")
   }
   // 手机号格式校验
   if (_data.phone && !common.isPhone(_data.phone)) {
-    return common.returnFail(t('phone.error'))
+    return common.returnFail("t('phone.error')")
   }
   // 手机号是否已被使用
   const isPhone = await dao.userDao.isRegisterByPhone(_data.phone, userData._id)
   if (_data.isPhone && isPhone) {
-    return common.returnFail(t('phone.registered'))
+    return common.returnFail("t('phone.registered')")
   }
   // 密码格式校验
   if (_data.password && !common.validatePassword(_data.password)) {
-    return common.returnFail(t('password.formatError'))
+    return common.returnFail("t('password.formatError')")
   }
 
   try {
@@ -73,13 +73,13 @@ export default async function (ctx: FunctionContext) {
 
     const result = await dao.userDao.updateUser(userData)
     if (result && result > 0) {
-      return common.returnAndPopup(t('update.success'))
+      return common.returnAndPopup("t('update.success')")
     } else {
-      return common.returnFail(t('update.failed'))
+      return common.returnFail("t('update.failed')")
     }
   } catch (e) {
     //TODO handle the exception
     console.log('updateUser Error:: ', e.message)
-    return common.returnFail(t('update.failed'))
+    return common.returnFail("t('update.failed')")
   }
 }

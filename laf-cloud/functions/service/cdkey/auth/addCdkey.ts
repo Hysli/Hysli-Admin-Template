@@ -1,6 +1,6 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, log, mail, sms, pay, dao, db, nw, console } = _ctx
 
 /**
  * 添加卡密
@@ -10,7 +10,7 @@ const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
 export default async function (ctx: FunctionContext) {
   const _data = ctx.body
   if (ctx.user.roles.indexOf('demo') > -1) {
-    return common.returnFail(t('operate.noPermission'))
+    return common.returnFail("t('operate.noPermission')")
   }
 
   // 如果 data 中没有 quantity or points，返回错误
@@ -27,7 +27,7 @@ export default async function (ctx: FunctionContext) {
     )
   }
   if (_data.quantity < 1 || _data.points < 1) {
-    return common.returnFail(t('cdkey.quantityOrPoints'))
+    return common.returnFail("t('cdkey.quantityOrPoints')")
   }
 
   try {
@@ -62,12 +62,12 @@ export default async function (ctx: FunctionContext) {
     }
 
     if (count >= 0) {
-      return common.returnAndPopup(t('add.success'))
+      return common.returnAndPopup("t('add.success')")
     }
-    return common.returnFail(t('add.failed'))
+    return common.returnFail("t('add.failed')")
   } catch (e) {
     //TODO handle the exception
     console.log('addCdkey Error:: ', e.message)
-    return common.returnFail(t('add.failed'))
+    return common.returnFail("t('add.failed')")
   }
 }

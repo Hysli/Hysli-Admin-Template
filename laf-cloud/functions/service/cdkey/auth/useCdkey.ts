@@ -11,7 +11,7 @@ const _ = cloud.database().command
 export default async function (ctx: FunctionContext) {
   const _data = ctx.body
   if (ctx.user.roles.indexOf('demo') > -1) {
-    return common.returnFail(t('operate.noPermission'))
+    return common.returnFail("t('operate.noPermission')")
   }
 
   // 如果 data 中没有 secret_key or uid，返回错误
@@ -22,16 +22,16 @@ export default async function (ctx: FunctionContext) {
   // 通过密钥查询卡密
   const cdkeyData = await dao.cdkeyManageDao.findBySecretKey(_data.secret_key)
   if (!cdkeyData) {
-    return common.returnFail(t('data.notExist'))
+    return common.returnFail("t('data.notExist')")
   }
   if (cdkeyData.status == 2) {
-    return common.returnFail(t('cdkey.disabled'))
+    return common.returnFail("t('cdkey.disabled')")
   }
   if (cdkeyData.expires_time < Date.now()) {
-    return common.returnFail(t('cdkey.expire'))
+    return common.returnFail("t('cdkey.expire')")
   }
   if (cdkeyData.use_time || cdkeyData.uid) {
-    return common.returnFail(t('cdkey.used'))
+    return common.returnFail("t('cdkey.used')")
   }
 
   try {
@@ -62,13 +62,13 @@ export default async function (ctx: FunctionContext) {
       }
       await dao.rechargeRecordDao.addRechargeRecord(rechargeRecord)
 
-      return common.returnAndPopup(t('operate.success'))
+      return common.returnAndPopup("t('operate.success')")
     } else {
-      return common.returnFail(t('operate.failed'))
+      return common.returnFail("t('operate.failed')")
     }
   } catch (e) {
     //TODO handle the exception
     console.log('updateCdkey Error:: ', e.message)
-    return common.returnFail(t('update.failed'))
+    return common.returnFail("t('update.failed')")
   }
 }

@@ -1,6 +1,6 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, log, mail, sms, pay, dao, db, nw, console } = _ctx
 const _ = cloud.database().command
 
 /**
@@ -11,7 +11,7 @@ const _ = cloud.database().command
 export default async function (ctx: FunctionContext) {
   const _data = ctx.body
   if (ctx.user.roles.indexOf('demo') > -1) {
-    return common.returnFail(t('operate.noPermission'))
+    return common.returnFail("t('operate.noPermission')")
   }
 
   // 如果 data 中没有 name 或者 code，返回错误
@@ -27,7 +27,7 @@ export default async function (ctx: FunctionContext) {
   }
   const menuList = await dao.menuManageDao.getMenuList(whereJson)
   if (menuList && menuList.length > 0) {
-    return common.returnFail(t('menu.titleExist'))
+    return common.returnFail("t('menu.titleExist')")
   }
 
   try {
@@ -55,13 +55,13 @@ export default async function (ctx: FunctionContext) {
     }
     const mid = await dao.menuManageDao.addMenu(menuInfo)
     if (mid) {
-      return common.returnAndPopup(t('add.success'))
+      return common.returnAndPopup("t('add.success')")
     } else {
-      return common.returnFail(t('add.failed'))
+      return common.returnFail("t('add.failed')")
     }
   } catch (e) {
     //TODO handle the exception
     console.log('addMenu Error:: ', e.message)
-    return common.returnFail(t('add.failed'))
+    return common.returnFail("t('add.failed')")
   }
 }

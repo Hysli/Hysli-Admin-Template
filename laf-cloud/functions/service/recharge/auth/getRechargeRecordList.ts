@@ -1,6 +1,6 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, log, mail, sms, pay, dao, db, nw, console } = _ctx
 const _ = cloud.database().command
 
 /**
@@ -14,7 +14,7 @@ export default async function (ctx: FunctionContext) {
   // 校验用户是否存在
   let userData = await dao.userDao.getInfoById(ctx.user.uid)
   if (!userData) {
-    return common.returnFail(t('data.notExist'))
+    return common.returnFail("t('data.notExist')")
   }
 
   let whereJson = {}
