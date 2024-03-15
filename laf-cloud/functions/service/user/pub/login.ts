@@ -1,6 +1,6 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, log, mail, sms, pay, dao, db, nw, console } = _ctx
 
 // 发送者邮箱
 const fromEmail = cloud.env.TencentCloud_FromEmail
@@ -60,22 +60,22 @@ export default async function (ctx: FunctionContext) {
   async function loginByUserName(username: string, password: string) {
     // 密码格式校验
     if (!common.validatePassword(password)) {
-      return common.returnFail(t('password.formatError'))
+      return common.returnFail("t('password.formatError')")
     }
 
     try {
       // 通过用户名查询用户
       const userData = await dao.userDao.findByUserName(username)
       if (!userData) {
-        return common.returnFail(t('username.notRegistered'))
+        return common.returnFail("t('username.notRegistered')")
       }
       // 校验密码是否正确
       if (userData.password !== common.hashPassword(password)) {
-        return common.returnFail(t('password.error'))
+        return common.returnFail("t('password.error')")
       }
       // 校验状态是否已被禁用
       if (userData.status == 2) {
-        return common.returnFail(t('account.disabled'))
+        return common.returnFail("t('account.disabled')")
       }
 
       const access_token = common.getToken7day(userData._id, userData.roles)
@@ -93,13 +93,13 @@ export default async function (ctx: FunctionContext) {
         login_time: Date.now(),
       })
 
-      return common.returnAndPopup(t('account.loginSuccess'), {
+      return common.returnAndPopup("t('account.loginSuccess')", {
         access_token,
       })
     } catch (e) {
       //TODO handle the exception
       console.log('loginByUserName Error:: ', e.message)
-      return common.returnFail(t('account.loginError'))
+      return common.returnFail("t('account.loginError')")
     }
   }
 
@@ -107,26 +107,26 @@ export default async function (ctx: FunctionContext) {
   async function loginByEmail(email: string, password: string) {
     // 邮箱格式校验
     if (!common.isEmail(email)) {
-      return common.returnFail(t('email.error'))
+      return common.returnFail("t('email.error')")
     }
     // 密码格式校验
     if (!common.validatePassword(password)) {
-      return common.returnFail(t('password.formatError'))
+      return common.returnFail("t('password.formatError')")
     }
 
     try {
       // 通过邮箱查询用户
       const userData = await dao.userDao.findByEmail(email)
       if (!userData) {
-        return common.returnFail(t('email.notRegistered'))
+        return common.returnFail("t('email.notRegistered')")
       }
       // 校验密码是否正确
       if (userData.password !== common.hashPassword(password)) {
-        return common.returnFail(t('password.error'))
+        return common.returnFail("t('password.error')")
       }
       // 校验状态是否已被禁用
       if (userData.status == 2) {
-        return common.returnFail(t('account.disabled'))
+        return common.returnFail("t('account.disabled')")
       }
 
       const access_token = common.getToken7day(userData._id, userData.roles)
@@ -144,13 +144,13 @@ export default async function (ctx: FunctionContext) {
         login_time: Date.now(),
       })
 
-      return common.returnAndPopup(t('account.loginSuccess'), {
+      return common.returnAndPopup("t('account.loginSuccess')", {
         access_token,
       })
     } catch (e) {
       //TODO handle the exception
       console.log('loginByEmail Error:: ', e.message)
-      return common.returnFail(t('account.loginError'))
+      return common.returnFail("t('account.loginError')")
     }
   }
 
@@ -158,18 +158,18 @@ export default async function (ctx: FunctionContext) {
   async function sendEmailCode(email: string): Promise<object> {
     // 邮箱格式校验
     if (!common.isEmail(email)) {
-      return common.returnFail(t('email.error'))
+      return common.returnFail("t('email.error')")
     }
 
     try {
       // 通过邮箱查询用户
       const userData = await dao.userDao.findByEmail(email)
       if (!userData) {
-        return common.returnFail(t('email.notRegistered'))
+        return common.returnFail("t('email.notRegistered')")
       }
       // 校验状态是否已被禁用
       if (userData.status == 2) {
-        return common.returnFail(t('account.disabled'))
+        return common.returnFail("t('account.disabled')")
       }
 
       // 类型 {'register':'注册，'login':'登录'}
@@ -186,7 +186,7 @@ export default async function (ctx: FunctionContext) {
         const codeTime = mailLogData.send_time
         const now = Date.now()
         if (now - codeTime <= 1000 * 60 * 2) {
-          return common.returnFail(t('email.sendTooOften'))
+          return common.returnFail("t('email.sendTooOften')")
         }
       }
 
@@ -209,14 +209,14 @@ export default async function (ctx: FunctionContext) {
         }
         await dao.mailLogDao.addMailLog(mailLogInfo)
 
-        return common.returnAndPopup(t('email.sendPending'))
+        return common.returnAndPopup("t('email.sendPending')")
       }
 
-      return common.returnFail(t('email.sendError'))
+      return common.returnFail("t('email.sendError')")
     } catch (e) {
       //TODO handle the exception
       console.log('sendEmailCode Exception:: ', e.message)
-      return common.returnFail(t('email.sendError'))
+      return common.returnFail("t('email.sendError')")
     }
   }
 
@@ -224,22 +224,22 @@ export default async function (ctx: FunctionContext) {
   async function loginByEmailCode(email: string, code: string) {
     // 邮箱格式校验
     if (!common.isEmail(email)) {
-      return common.returnFail(t('email.error'))
+      return common.returnFail("t('email.error')")
     }
     // 验证码格式校验
     if (!common.codeFormat(code)) {
-      return common.returnFail(t('email.codeFormatError'))
+      return common.returnFail("t('email.codeFormatError')")
     }
 
     try {
       // 通过邮箱查询用户
       const userData = await dao.userDao.findByEmail(email)
       if (!userData) {
-        return common.returnFail(t('email.notRegistered'))
+        return common.returnFail("t('email.notRegistered')")
       }
       // 校验状态是否已被禁用
       if (userData.status == 2) {
-        return common.returnFail(t('account.disabled'))
+        return common.returnFail("t('account.disabled')")
       }
       // 通过邮箱验证码获取最后一条邮件记录
       const mailLogData = await dao.mailLogDao.findLastByWhere(
@@ -249,13 +249,13 @@ export default async function (ctx: FunctionContext) {
         'login'
       )
       if (!mailLogData) {
-        return common.returnFail(t('email.codeError'))
+        return common.returnFail("t('email.codeError')")
       }
       // 验证码是否过期
       const codeTime = mailLogData.send_time
       const now = Date.now()
       if (now - codeTime > 1000 * 60 * 5) {
-        return common.returnFail(t('email.codeExpired'))
+        return common.returnFail("t('email.codeExpired')")
       }
       const access_token = common.getToken7day(userData._id, userData.roles)
       const { headers } = ctx
@@ -274,13 +274,13 @@ export default async function (ctx: FunctionContext) {
       // 修改邮件验证码的状态
       await dao.mailLogDao.updateStatusById(mailLogData._id, 'used')
 
-      return common.returnAndPopup(t('account.loginSuccess'), {
+      return common.returnAndPopup("t('account.loginSuccess')", {
         access_token,
       })
     } catch (e) {
       //TODO handle the exception
       console.log('loginByEmailCode Error:: ', e.message)
-      return common.returnFail(t('account.loginError'))
+      return common.returnFail("t('account.loginError')")
     }
   }
 
@@ -288,26 +288,26 @@ export default async function (ctx: FunctionContext) {
   async function loginByPhone(phone: string, password: string) {
     // 手机号格式校验
     if (!common.isPhone(phone)) {
-      return common.returnFail(t('phone.error'))
+      return common.returnFail("t('phone.error')")
     }
     // 密码格式校验
     if (!common.validatePassword(password)) {
-      return common.returnFail(t('password.formatError'))
+      return common.returnFail("t('password.formatError')")
     }
 
     try {
       // 通过手机号查询用户
       const userData = await dao.userDao.findByPhone(phone)
       if (!userData) {
-        return common.returnFail(t('phone.notRegistered'))
+        return common.returnFail("t('phone.notRegistered')")
       }
       // 校验密码是否正确
       if (userData.password !== common.hashPassword(password)) {
-        return common.returnFail(t('password.error'))
+        return common.returnFail("t('password.error')")
       }
       // 校验状态是否已被禁用
       if (userData.status == 2) {
-        return common.returnFail(t('account.disabled'))
+        return common.returnFail("t('account.disabled')")
       }
 
       const access_token = common.getToken7day(userData._id, userData.roles)
@@ -325,13 +325,13 @@ export default async function (ctx: FunctionContext) {
         login_time: Date.now(),
       })
 
-      return common.returnAndPopup(t('account.loginSuccess'), {
+      return common.returnAndPopup("t('account.loginSuccess')", {
         access_token,
       })
     } catch (e) {
       //TODO handle the exception
       console.log('loginByPhone Error:: ', e.message)
-      return common.returnFail(t('account.loginError'))
+      return common.returnFail("t('account.loginError')")
     }
   }
 
@@ -339,18 +339,18 @@ export default async function (ctx: FunctionContext) {
   async function sendSmsCode(phone: string): Promise<object> {
     // 手机号格式校验
     if (!common.isPhone(phone)) {
-      return common.returnFail(t('phone.error'))
+      return common.returnFail("t('phone.error')")
     }
 
     try {
       // 通过手机号查询用户
       const userData = await dao.userDao.findByPhone(phone)
       if (!userData) {
-        return common.returnFail(t('phone.notRegistered'))
+        return common.returnFail("t('phone.notRegistered')")
       }
       // 校验状态是否已被禁用
       if (userData.status == 2) {
-        return common.returnFail(t('account.disabled'))
+        return common.returnFail("t('account.disabled')")
       }
 
       // 类型 {'register':'注册，'login':'登录'}
@@ -366,7 +366,7 @@ export default async function (ctx: FunctionContext) {
         const codeTime = smsLogData.send_time
         const now = Date.now()
         if (now - codeTime <= 1000 * 60 * 2) {
-          return common.returnFail(t('phone.sendTooOften'))
+          return common.returnFail("t('phone.sendTooOften')")
         }
       }
 
@@ -386,14 +386,14 @@ export default async function (ctx: FunctionContext) {
         }
         await dao.smsLogDao.addSmsLog(smsLogInfo)
 
-        return common.returnAndPopup(t('phone.sendPending'))
+        return common.returnAndPopup("t('phone.sendPending')")
       }
 
-      return common.returnFail(t('phone.sendError'))
+      return common.returnFail("t('phone.sendError')")
     } catch (e) {
       //TODO handle the exception
       console.log('sendPhoneCode Error:: ', e.message)
-      return common.returnFail(t('phone.sendError'))
+      return common.returnFail("t('phone.sendError')")
     }
   }
 
@@ -401,22 +401,22 @@ export default async function (ctx: FunctionContext) {
   async function loginByPhoneCode(phone: string, code: string) {
     // 手机号格式校验
     if (!common.isPhone(phone)) {
-      return common.returnFail(t('phone.error'))
+      return common.returnFail("t('phone.error')")
     }
     // 验证码格式校验
     if (!common.codeFormat(code)) {
-      return common.returnFail(t('phone.codeFormatError'))
+      return common.returnFail("t('phone.codeFormatError')")
     }
 
     try {
       // 通过手机号查询用户
       const userData = await dao.userDao.findByPhone(phone)
       if (!userData) {
-        return common.returnFail(t('phone.notRegistered'))
+        return common.returnFail("t('phone.notRegistered')")
       }
       // 校验状态是否已被禁用
       if (userData.status == 2) {
-        return common.returnFail(t('account.disabled'))
+        return common.returnFail("t('account.disabled')")
       }
       // 通过短信验证码获取最后一条短信记录
       const smsLogData = await dao.smsLogDao.findLastByWhere(
@@ -425,13 +425,13 @@ export default async function (ctx: FunctionContext) {
         'login'
       )
       if (!smsLogData) {
-        return common.returnFail(t('phone.codeError'))
+        return common.returnFail("t('phone.codeError')")
       }
       // 验证码是否过期
       const codeTime = smsLogData.send_time
       const now = Date.now()
       if (now - codeTime > 1000 * 60 * 5) {
-        return common.returnFail(t('phone.codeExpired'))
+        return common.returnFail("t('phone.codeExpired')")
       }
       const access_token = common.getToken7day(userData._id, userData.roles)
       const { headers } = ctx
@@ -450,13 +450,13 @@ export default async function (ctx: FunctionContext) {
       // 修改短信验证码的状态
       dao.smsLogDao.updateStatusById(smsLogData._id, 'used')
 
-      return common.returnAndPopup(t('account.loginSuccess'), {
+      return common.returnAndPopup("t('account.loginSuccess')", {
         access_token,
       })
     } catch (e) {
       //TODO handle the exception
       console.log('loginByPhoneCode Error:: ', e.message)
-      return common.returnFail(t('phone.loginError'))
+      return common.returnFail("t('phone.loginError')")
     }
   }
 }

@@ -70,5 +70,5 @@ export interface GlobEnvConfig {
   //图片前缀地址
   VITE_GLOB_IMG_URL?: string;
   // 是否启用用户名登录和注册
-  VITE_ENABLE_USERNAME: boolean;
+  VITE_GLOB_ENABLE_USERNAME: boolean;
 }

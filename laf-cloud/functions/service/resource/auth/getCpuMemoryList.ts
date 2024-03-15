@@ -1,9 +1,9 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, log, mail, sms, pay, dao, db, nw, console } = _ctx
 
 /**
- * 获取laf运行时资源
+ * 获取 laf 运行时资源
  * @param ctx
  * @returns
  */
@@ -27,7 +27,7 @@ export default async function (ctx: FunctionContext) {
       },
       body: JSON.stringify(user),
     })
-    const token = await _response.json()
+    const token: any = await _response.json()
     if (!token || !token.data) {
       return common.returnFail(token.error)
     }
@@ -42,7 +42,7 @@ export default async function (ctx: FunctionContext) {
         },
       }
     )
-    const result = await response.json()
+    const result: any = await response.json()
     if (!result || !result.data) {
       return common.returnFail(result.error)
     }

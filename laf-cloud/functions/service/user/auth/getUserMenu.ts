@@ -1,6 +1,6 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, log, mail, sms, pay, dao, db, nw, console } = _ctx
 
 /**
  * 获取用户动态菜单
@@ -14,17 +14,17 @@ export default async function (ctx: FunctionContext) {
 
   const userData = await dao.userDao.getInfoById(ctx.user.uid)
   if (!userData) {
-    return common.returnFail(t('account.getInfoFail'))
+    return common.returnFail("t('account.getInfoFail')")
   }
   const roleData = await dao.roleManageDao.findListByCodes(userData.roles)
   if (!roleData || roleData.length == 0) {
-    return common.returnFail(t('account.getRoleFail'))
+    return common.returnFail("t('account.getRoleFail')")
   }
 
   let _ids = []
-  roleData.forEach(item => {
+  roleData.forEach((item) => {
     if (!item.menu_auth || item.menu_auth.length == 0) return false
-    item.menu_auth.forEach(x => {
+    item.menu_auth.forEach((x) => {
       if (!_ids.includes(x)) {
         _ids.push(x)
       }
@@ -32,10 +32,10 @@ export default async function (ctx: FunctionContext) {
   })
   const menuData = await dao.menuManageDao.findListByIds(_ids)
   if (!menuData || menuData.length == 0) {
-    return common.returnFail(t('account.getMenuFail'))
+    return common.returnFail("t('account.getMenuFail')")
   }
 
-  let _menuData = menuData.filter(x => x.type == 1 || x.type == 2)
+  let _menuData = menuData.filter((x) => x.type == 1 || x.type == 2)
   let menuList = generateOptions(_menuData)
   // 开始递归方法
   function generateOptions(params) {
@@ -47,7 +47,7 @@ export default async function (ctx: FunctionContext) {
         parent.meta = {
           icon: param.icon,
           title: param.title,
-          hidden: param.is_hide
+          hidden: param.is_hide,
         }
         parent.children = getchilds(param._id, params) // 获取子节点
         if (parent.children.length == 0) {
@@ -59,9 +59,9 @@ export default async function (ctx: FunctionContext) {
               icon: param.icon,
               title: param.title,
               affix: param.is_affix,
-              hidden: param.is_hide
+              hidden: param.is_hide,
             },
-            component: param.component
+            component: param.component,
           })
           parent.component = 'Layout'
         }
@@ -81,7 +81,7 @@ export default async function (ctx: FunctionContext) {
           icon: arr.icon,
           title: arr.title,
           affix: arr.is_affix,
-          hidden: arr.is_hide
+          hidden: arr.is_hide,
         }
         childs.push(info)
       }
@@ -96,5 +96,5 @@ export default async function (ctx: FunctionContext) {
     return childs
   }
 
-  return common.returnSuccess(t('account.getMenuSuccess'), menuList)
+  return common.returnSuccess("t('account.getMenuSuccess')", menuList)
 }

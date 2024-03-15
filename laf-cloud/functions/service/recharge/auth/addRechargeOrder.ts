@@ -1,6 +1,6 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
+const { common, log, mail, sms, pay, dao, db, nw, console } = _ctx
 const _ = cloud.database().command
 
 /**
@@ -11,7 +11,7 @@ const _ = cloud.database().command
 export default async function (ctx: FunctionContext) {
   const _data = ctx.body
   if (ctx.user.roles.indexOf('demo') > -1) {
-    return common.returnFail(t('operate.noPermission'))
+    return common.returnFail("t('operate.noPermission')")
   }
 
   // 如果 data 中没有 uid or templateId，返回错误
@@ -26,7 +26,7 @@ export default async function (ctx: FunctionContext) {
 
   const templateData = await dao.rechargeDao.getInfoById(_data.template_id)
   if (!templateData) {
-    return common.returnFail(t('template.notExist'))
+    return common.returnFail("t('template.notExist')")
   }
 
   const title = `充${templateData.recharge_points}点，赠送${templateData.gift_points}点`
@@ -39,7 +39,7 @@ export default async function (ctx: FunctionContext) {
       recharge_points: templateData.recharge_points,
       gift_points: templateData.gift_points,
       recharge_template_id: templateData._id,
-      pay_status: 'pending', // 支付状态（pending请求中，fail失败，success成功）
+      pay_status: 'pending', // 支付状态（pending 请求中，fail 失败，success 成功）
       pay_method: _data.pay_method, // 支付方式（10-微信公众号，11-微信小程序，20-支付宝，30-Paypal，40-Stripe）
       pay_amount: null,
       pay_time: null,
@@ -62,7 +62,7 @@ export default async function (ctx: FunctionContext) {
         notifyUrl: `https://${ctx.headers['host']}/notify/wxpay_native_notify`,
         payMethod: _data.pay_method,
       }
-      const result = await pay.WxNativePay(prepayInfo)
+      const result: any = await pay.WxNativePay(prepayInfo)
       if (result.status == 200) {
         let _url = await common.generateQRCode(result.code_url)
         const data = {
@@ -70,14 +70,14 @@ export default async function (ctx: FunctionContext) {
           qrCode: _url,
           status: 'pending',
         }
-        return common.returnSuccess(t('add.success'), data)
+        return common.returnSuccess("t('add.success')", data)
       }
     }
 
-    return common.returnFail(t('add.failed'))
+    return common.returnFail("t('add.failed')")
   } catch (e) {
     //TODO handle the exception
     console.log('addRechargeOrder Error:: ', e.message)
-    return common.returnFail(t('add.failed'))
+    return common.returnFail("t('add.failed')")
   }
 }
