@@ -43,8 +43,8 @@
           </n-form-item>
         </n-grid-item>
         <n-grid-item :span="12">
-          <n-form-item label="角色" path="roles">
-            <n-select placeholder="请选择角色" multiple :options="state.roleData" :default-value="state.ruleForm.roles"
+          <n-form-item label="角色" path="roles" :rule="[{ required: true, message: '角色不能为空', trigger: 'blur' }]">
+            <n-select placeholder="请选择角色" multiple :options="state.roleData" :default-value="state.ruleForm.roles" 
               :on-update:value="changeRole" value-field="code" label-field="name" max-tag-count="responsive" clearable />
           </n-form-item>
         </n-grid-item>
