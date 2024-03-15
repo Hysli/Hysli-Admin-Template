@@ -1,6 +1,7 @@
 import cloud from '@lafjs/cloud'
 import * as crypto from 'crypto'
 const db = cloud.database()
+const _ = db.command
 
 // 生成密钥
 function generateSecretKey(length: number): string {
@@ -68,7 +69,7 @@ export interface returnFailType {
 function returnFail(msg: string): returnFailType {
   return {
     code: -1,
-    msg
+    msg,
   }
 }
 
@@ -86,12 +87,12 @@ function returnSuccess(msg: string, data: any): returnDataType {
     return {
       code: 200,
       msg,
-      data
+      data,
     }
   } else {
     return {
       code: 200,
-      msg
+      msg,
     }
   }
 }
@@ -103,12 +104,12 @@ function returnAndPopup(msg: string, data?: any): returnDataType {
     return {
       code: 100,
       msg,
-      data
+      data,
     }
   } else {
     return {
       code: 100,
-      msg
+      msg,
     }
   }
 }
@@ -124,12 +125,12 @@ function getToken7day(uid: string, roles = ['common']): string {
   const access_token = cloud.getToken({
     uid: uid,
     roles: roles,
-    exp: expire
+    exp: expire,
   })
   // 将 uid 和 access_token 存入一个专门的 token 数据库
   db.collection('login_token').add({
     uid,
-    access_token
+    access_token,
   })
   return access_token
 }
@@ -187,7 +188,7 @@ async function generateQRCode(text: string): Promise<any> {
         width: 500, // 宽度
         height: 500, // 高度
         margin: 5,
-        errorCorrectionLevel: 'H' // 容错级别，可选值：L, M, Q, H
+        errorCorrectionLevel: 'H', // 容错级别，可选值：L, M, Q, H
       }
 
       qrcode.toDataURL(text, options, (err: any, url: unknown) => {
@@ -207,6 +208,23 @@ async function generateQRCode(text: string): Promise<any> {
   }
 }
 
+/**
+ * 设置环境变量
+ */
+async function setEnv() {
+  const { data: env_Data } = await db
+    .collection('laf_env')
+    .where({
+      status: _.eq(1),
+    })
+    .get()
+  if (env_Data) {
+    env_Data.forEach((item: any) => {
+      process.env[item.key] = item.value
+    })
+  }
+}
+
 export const common = {
   generateSecretKey,
   generateRandomCode,
@@ -222,5 +240,8 @@ export const common = {
   returnAndPopup,
   aesEncObj,
   aesDecKey,
-  generateQRCode
+  generateQRCode,
+  setEnv,
 }
+
+
