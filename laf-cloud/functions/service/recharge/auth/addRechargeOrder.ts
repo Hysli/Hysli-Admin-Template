@@ -10,9 +10,6 @@ const _ = cloud.database().command
  */
 export default async function (ctx: FunctionContext) {
   const _data = ctx.body
-  if (ctx.user.roles.indexOf('demo') > -1) {
-    return common.returnFail("t('operate.noPermission')")
-  }
 
   // 如果 data 中没有 uid or templateId，返回错误
   if (
