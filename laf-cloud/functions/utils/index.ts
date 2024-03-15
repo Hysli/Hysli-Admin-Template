@@ -132,6 +132,10 @@ interface CommonType {
    * @returns 返回二维码链接
    */
   generateQRCode: (text: string) => Promise<any>
+  /**
+   * 设置环境变量
+   */
+  setEnv: () => Promise<void>
 }
 
 interface MailType {
