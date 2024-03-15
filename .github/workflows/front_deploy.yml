@@ -12,7 +12,7 @@ env:
   LAF_APPID: ${{ secrets.LAF_APPID }}
   LAF_PAT: ${{ secrets.LAF_PAT }}
   API_URL: ${{ secrets.API_URL }}
-  WEB_PATH: .
+  WEB_PATH: admin/
   DIST_PATH: 'dist'
 jobs:
   build:
