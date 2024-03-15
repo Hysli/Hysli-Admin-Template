@@ -24,14 +24,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+          cache: 'pnpm'  # 添加缓存支持
+      - name: Install pnpm
+        run: npm install -g pnpm  # 安装 pnpm
       # 安装项目依赖
       - name: Install Dependencies
         working-directory: ${{ env.WEB_PATH }}
-        run: npm install
+        run: pnpm install
       # 编译项目
       - name: Build
         working-directory: ${{ env.WEB_PATH }}
-        run: npm run build
+        run: pnpm run build
       # 安装 laf-cli
       - name: Install Laf-CLI
         run: npm i laf-cli -g
