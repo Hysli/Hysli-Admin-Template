@@ -72,7 +72,8 @@ const state = reactive({
   chartCpu: null as any,
   chartMemory: null as any,
   chartDatabase: null as any,
-  chartStorage: null as any
+  chartStorage: null as any,
+  chartTimer: null as any
 })
 
 onMounted(async () => {
@@ -82,7 +83,7 @@ onMounted(async () => {
   initCharts()
 
   await getResource()
-  setInterval(() => {
+  state.chartTimer = setInterval(() => {
     getResource()
   }, 5000)
 
@@ -354,6 +355,9 @@ const formattedTime = (timestamp) => {
 onUnmounted(() => {
   if (state.timer) {
     clearInterval(state.timer)
+  }
+  if (state.chartTimer) {
+    clearInterval(state.chartTimer)
   }
 })
 
