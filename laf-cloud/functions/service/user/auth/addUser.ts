@@ -51,10 +51,7 @@ export default async function (ctx: FunctionContext) {
   if (!common.validatePassword(_data.password)) {
     return common.returnFail("t('password.formatError')")
   }
-  const { headers } = ctx
-  const ip = headers['remote-host']
-    ? headers['remote-host']
-    : headers['x-original-forwarded-for']
+  const ip = common.getIP(ctx)
 
   try {
     // 创建用户

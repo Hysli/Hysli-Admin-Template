@@ -56,10 +56,7 @@ export default async function (ctx: FunctionContext) {
       return common.returnFail("t('username.registered')")
     }
 
-    const { headers } = ctx
-    const ip = headers['remote-host']
-      ? headers['remote-host']
-      : headers['x-forwarded-for']
+    const ip = common.getIP(ctx)
 
     try {
       // 创建用户
@@ -132,10 +129,7 @@ export default async function (ctx: FunctionContext) {
     if (now - codeTime > 1000 * 60 * 5) {
       return common.returnFail("t('email.codeExpired')")
     }
-    const { headers } = ctx
-    const ip = headers['remote-host']
-      ? headers['remote-host']
-      : headers['x-forwarded-for']
+    const ip = common.getIP(ctx)
 
     try {
       // 创建用户
@@ -272,10 +266,7 @@ export default async function (ctx: FunctionContext) {
     if (now - codeTime > 1000 * 60 * 5) {
       return common.returnFail("t('phone.codeExpired')")
     }
-    const { headers } = ctx
-    const ip = headers['remote-host']
-      ? headers['remote-host']
-      : headers['x-forwarded-for']
+    const ip = common.getIP(ctx)
 
     try {
       // 创建用户

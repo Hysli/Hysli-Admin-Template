@@ -66,6 +66,10 @@ function requestRecord() {
   const ip = headers['remote-host']
     ? headers['remote-host']
     : headers['x-forwarded-for']
+    ? headers['x-forwarded-for']
+    : headers['x-real-ip']
+    ? headers['x-real-ip']
+    : headers['x-original-forwarded-for']
   // 如果 user 不存在，看看是否有 key
   if (!user) {
     const key = headers['Authorization'] || headers['authorization']
