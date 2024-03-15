@@ -1,5 +1,4 @@
-import { FunctionContext } from '@lafjs/cloud'
-import log from '@/utils/log'
+import { log } from '@/utils/log'
 import * as mail from '@/utils/mail'
 import * as sms from '@/utils/sms'
 import * as qiniu from '@/utils/qiniu'
@@ -17,11 +16,14 @@ export const utils: UtilsType = {
   pay,
   common,
   dao,
-  t: (key: string) => key
+  t: (key: string) => key,
 }
 
 export interface UtilsType {
-  log: (ctx: FunctionContext) => string
+  log: (
+    ctx: FunctionContext,
+    type: 'update' | 'add' | 'del' | 'get'
+  ) => Promise<void>
   i18n: any
   mail: MailType
   sms: SmsType
@@ -136,6 +138,12 @@ interface CommonType {
    * 设置环境变量
    */
   setEnv: () => Promise<void>
+  /**
+   * 获取用户 IP
+   * @param ctx 上下文
+   * @returns 返回用户 IP
+   */
+  getIP: (ctx: FunctionContext) => string
 }
 
 interface MailType {

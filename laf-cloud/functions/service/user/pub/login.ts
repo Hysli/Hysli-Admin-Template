@@ -79,10 +79,7 @@ export default async function (ctx: FunctionContext) {
       }
 
       const access_token = common.getToken7day(userData._id, userData.roles)
-      const { headers } = ctx
-      const ip = headers['remote-host']
-        ? headers['remote-host']
-        : headers['x-forwarded-for']
+      const ip = common.getIP(ctx)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
@@ -130,10 +127,7 @@ export default async function (ctx: FunctionContext) {
       }
 
       const access_token = common.getToken7day(userData._id, userData.roles)
-      const { headers } = ctx
-      const ip = headers['remote-host']
-        ? headers['remote-host']
-        : headers['x-forwarded-for']
+      const ip = common.getIP(ctx)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
@@ -259,9 +253,7 @@ export default async function (ctx: FunctionContext) {
       }
       const access_token = common.getToken7day(userData._id, userData.roles)
       const { headers } = ctx
-      const ip = headers['remote-host']
-        ? headers['remote-host']
-        : headers['x-forwarded-for']
+      const ip = common.getIP(ctx)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
@@ -311,10 +303,7 @@ export default async function (ctx: FunctionContext) {
       }
 
       const access_token = common.getToken7day(userData._id, userData.roles)
-      const { headers } = ctx
-      const ip = headers['remote-host']
-        ? headers['remote-host']
-        : headers['x-forwarded-for']
+      const ip = common.getIP(ctx)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
@@ -434,10 +423,7 @@ export default async function (ctx: FunctionContext) {
         return common.returnFail("t('phone.codeExpired')")
       }
       const access_token = common.getToken7day(userData._id, userData.roles)
-      const { headers } = ctx
-      const ip = headers['remote-host']
-        ? headers['remote-host']
-        : headers['x-forwarded-for']
+      const ip = common.getIP(ctx)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)

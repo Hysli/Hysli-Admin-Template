@@ -225,6 +225,22 @@ async function setEnv() {
   }
 }
 
+/**
+ * 获取用户 IP
+ * @param ctx 上下文
+ * @returns 返回用户 IP
+ */
+function getIP(ctx: FunctionContext) {
+  const ip = ctx.headers['remote-host']
+    ? ctx.headers['remote-host']
+    : ctx.headers['x-forwarded-for']
+    ? ctx.headers['x-forwarded-for']
+    : ctx.headers['x-real-ip']
+    ? ctx.headers['x-real-ip']
+    : ctx.headers['x-original-forwarded-for']
+  return ip || "127.0.0.1"
+}
+
 export const common = {
   generateSecretKey,
   generateRandomCode,
@@ -242,6 +258,7 @@ export const common = {
   aesDecKey,
   generateQRCode,
   setEnv,
+  getIP,
 }
 
 
