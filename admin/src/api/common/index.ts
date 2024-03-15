@@ -11,3 +11,15 @@ export function commonUploadFile(params?) {
 		params
 	})
 }
+
+/**
+ * 获取laf运行时资源
+ * @param params
+ */
+export function getCpuMemoryList(params?) {
+	return http.request({
+		url: 'service/resource/auth/getCpuMemoryList',
+		method: 'post',
+		params
+	})
+}

@@ -1,0 +1,6 @@
+name: service/resource/auth/getCpuMemoryList
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []
