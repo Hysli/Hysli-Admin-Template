@@ -3,7 +3,7 @@ import { _ctx } from '@/global'
 const { common, t, log, mail, sms, pay, dao, db, nw, console } = _ctx
 
 /**
- * 添加角色
+ * 添加卡密
  * @param ctx
  * @returns
  */
@@ -13,71 +13,61 @@ export default async function (ctx: FunctionContext) {
     return common.returnFail(t('operate.noPermission'))
   }
 
-  // 如果 data 中没有 name 或者 code，返回错误
-  if (!_data?.name || !_data?.code) {
-    return common.returnFail('Error: name or code is empty')
+  // 如果 data 中没有 quantity or points，返回错误
+  if (
+    _data?.quantity == null ||
+    _data?.quantity == undefined ||
+    _data?.points == null ||
+    _data?.points == undefined ||
+    _data?.expires_time == null ||
+    _data?.expires_time == undefined
+  ) {
+    return common.returnFail(
+      'Error: quantity or points or expires_time is empty'
+    )
   }
-
-  // 根据角色 code 查询所有角色
-  const roleList = await dao.roleManageDao.findListByCode(_data.code)
-  if (roleList && roleList.length > 0) {
-    return common.returnFail(t('role.codeExist'))
+  if (_data.quantity < 1 || _data.points < 1) {
+    return common.returnFail(t('cdkey.quantityOrPoints'))
   }
 
   try {
-    // 创建角色
-    const roleInfo = {
-      code: _data.code,
-      name: _data.name,
-      description: _data.description ?? '',
-      menu_auth: _data.menu_auth ?? [],
-      status: _data.status ?? 1,
-      create_time: Date.now(),
-      update_time: Date.now(),
-    }
-    const rid = await dao.roleManageDao.addRole(roleInfo)
-    if (rid) {
-      return common.returnAndPopup(t('add.success'))
-    } else {
-      return common.returnFail(t('add.failed'))
-    }
-  } catch (e) {
-    //TODO handle the exception
-    console.log('addRole Error:: ', e.message)
-    return common.returnFail(t('add.failed'))
-  }
-}
-      callback_time: null,
-    }
-    const rid = await dao.rechargeOrderDao.addRechargeOrder(orderInfo)
-    if (rid && (_data.pay_method == 10 || _data.pay_method == 11)) {
-      // 创建预支付订单（微信）
-      const prepayInfo = {
-        orderDesc: title,
-        orderNo: rid,
-        orderAmount: templateData.sales_price * 100,
-        requestIp: ctx.headers['remote-host']
-          ? ctx.headers['remote-host']
-          : ctx.headers['x-forwarded-for'],
-        notifyUrl: `https://${ctx.headers['host']}/notify/wxpay_native_notify`,
-        payMethod: _data.pay_method,
-      }
-      const result = await pay.WxNativePay(prepayInfo)
-      if (result.status == 200) {
-        let _url = await common.generateQRCode(result.code_url)
-        const data = {
-          orderNo: rid,
-          qrCode: _url,
-          status: 'pending',
+    let count = 0
+    for (let i = 1; i <= _data.quantity; i++) {
+      const secretKey = common.generateSecretKey(8)
+      const _secretKey = _data?.prefix ? _data.prefix + secretKey : secretKey
+
+      // 校验密钥是否已存在
+      const isExist = await dao.cdkeyManageDao.isExistBySecretKey(_secretKey)
+      if (isExist) {
+        i--
+      } else {
+        // 创建密钥
+        const cdkeyInfo = {
+          prefix: _data?.prefix ?? '',
+          secret_key: _secretKey,
+          points: _data?.points ? Number(_data.points) : 0,
+          expires_time: _data?.expires_time ?? 0,
+          is_gift: _data.is_gift ?? false,
+          status: _data.status ?? 1,
+          create_time: Date.now(),
+          update_time: Date.now(),
+          use_time: null,
+          uid: null,
         }
-        return common.returnSuccess(t('add.success'), data)
+        const rid = await dao.cdkeyManageDao.addCdkey(cdkeyInfo)
+        if (rid) {
+          count++
+        }
       }
     }
 
+    if (count >= 0) {
+      return common.returnAndPopup(t('add.success'))
+    }
     return common.returnFail(t('add.failed'))
   } catch (e) {
     //TODO handle the exception
-    console.log('addRechargeOrder Error:: ', e.message)
+    console.log('addCdkey Error:: ', e.message)
     return common.returnFail(t('add.failed'))
   }
 }
