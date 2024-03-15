@@ -4,8 +4,7 @@
     <div class="view-account-container">
       <div class="view-account-top">
         <div class="view-account-top-logo flex justify-center items-center mb-4">
-          <img class="w-16" :src="websiteConfig.loginImage" alt="" />
-          <h3 class="text-5xl ml-4 font-bold">HySLI.AI</h3>
+          <img class="w-64" :src="websiteConfig.loginImage" alt="" />
         </div>
         <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div>
       </div>
@@ -228,10 +227,10 @@ const handleSendCode = async () => {
       }
       await sendCode(params)
       state.codeLoading = true
-      state.codeMsg = '120s后重发'
+      state.codeMsg = '120s 后重发'
       state.timer = setInterval(() => {
         state.codeTime--
-        state.codeMsg = state.codeTime + 's后重发'
+        state.codeMsg = state.codeTime + 's 后重发'
         if (state.codeTime == 0) {
           clearInterval(state.timer)
           state.codeTime = 120
@@ -262,10 +261,10 @@ const handleSendCode = async () => {
       }
       await sendCode(params)
       state.codeLoading = true
-      state.codeMsg = '120s后重发'
+      state.codeMsg = '120s 后重发'
       state.timer = setInterval(() => {
         state.codeTime--
-        state.codeMsg = state.codeTime + 's后重发'
+        state.codeMsg = state.codeTime + 's 后重发'
         if (state.codeTime == 0) {
           clearInterval(state.timer)
           state.codeTime = 120
