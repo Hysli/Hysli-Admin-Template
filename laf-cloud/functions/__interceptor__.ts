@@ -23,7 +23,7 @@ export default async function (ctx: FunctionContext, next: Function) {
     if (result) {
       const res = await next(ctx)
       // 判断 res 类型并相应地转换为字符串
-      console.log('接口返回值', res, '接口为：', ctx.__function_name)
+      // console.log('接口返回值', res, '接口为：', ctx.__function_name)
       return res_i18n(res)
     } else {
       return
