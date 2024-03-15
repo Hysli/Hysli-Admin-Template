@@ -46,6 +46,7 @@
     "element-resize-detector": "^1.2.4",
     "font-awesome": "^4.7.0",
     "fs-extra": "^11.2.0",
+    "highcharts": "^11.4.0",
     "json-editor-vue3": "^1.0.8",
     "lodash-es": "^4.17.21",
     "mitt": "^3.0.1",
