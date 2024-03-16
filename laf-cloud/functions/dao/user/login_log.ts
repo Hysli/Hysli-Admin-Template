@@ -9,7 +9,7 @@ export class UserLoginLogDao {
   /**
    * 添加用户登录日志
    * @param entity 登录日志实体
-   * @returns 成功时返回id值，失败时返回null
+   * @returns 成功时返回 id 值，失败时返回 null
    */
   static async addUserLoginLog(entity: UserLoginLog): Promise<any> {
     if (!entity) return null
@@ -17,7 +17,7 @@ export class UserLoginLogDao {
     const result = await nw.db.add({
       dbName: this._dbName,
       dataJson: entity,
-      cancelAddTime: true
+      cancelAddTime: true,
     })
     return result
   }
@@ -32,15 +32,19 @@ export interface UserLoginLog {
    */
   _id?: string
   /**
-   * 登录IP
+   * 登录 IP
    */
   login_ip: string
+  /**
+   * 登录 IP 详细信息
+   */
+  login_ip_info: object
   /**
    * 登录时间
    */
   login_time: number
   /**
-   * 用户id
+   * 用户 id
    */
   uid: string
 }
