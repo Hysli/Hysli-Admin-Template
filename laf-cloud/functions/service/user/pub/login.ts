@@ -80,13 +80,14 @@ export default async function (ctx: FunctionContext) {
 
       const access_token = common.getToken7day(userData._id, userData.roles)
       const ip = common.getIP(ctx)
-
+      const ip_info = await getIPInfo(ip)
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
       // 插入登录日志
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
+        login_ip_info: ip_info,
         login_time: Date.now(),
       })
 
@@ -128,6 +129,7 @@ export default async function (ctx: FunctionContext) {
 
       const access_token = common.getToken7day(userData._id, userData.roles)
       const ip = common.getIP(ctx)
+      const ip_info = await getIPInfo(ip)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
@@ -135,6 +137,7 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
+        login_ip_info: ip_info,
         login_time: Date.now(),
       })
 
@@ -252,8 +255,8 @@ export default async function (ctx: FunctionContext) {
         return common.returnFail("t('email.codeExpired')")
       }
       const access_token = common.getToken7day(userData._id, userData.roles)
-      const { headers } = ctx
       const ip = common.getIP(ctx)
+      const ip_info = await getIPInfo(ip)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
@@ -261,6 +264,7 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
+        login_ip_info: ip_info,
         login_time: Date.now(),
       })
       // 修改邮件验证码的状态
@@ -304,6 +308,7 @@ export default async function (ctx: FunctionContext) {
 
       const access_token = common.getToken7day(userData._id, userData.roles)
       const ip = common.getIP(ctx)
+      const ip_info = await getIPInfo(ip)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
@@ -311,6 +316,7 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
+        login_ip_info: ip_info,
         login_time: Date.now(),
       })
 
@@ -424,6 +430,7 @@ export default async function (ctx: FunctionContext) {
       }
       const access_token = common.getToken7day(userData._id, userData.roles)
       const ip = common.getIP(ctx)
+      const ip_info = await getIPInfo(ip)
 
       // 更新 access_token
       await dao.userDao.updateAccessTokenById(userData._id, access_token)
@@ -431,6 +438,7 @@ export default async function (ctx: FunctionContext) {
       await dao.userLoginLogDao.addUserLoginLog({
         uid: userData._id,
         login_ip: ip.toString(),
+        login_ip_info: ip_info,
         login_time: Date.now(),
       })
       // 修改短信验证码的状态
@@ -445,4 +453,12 @@ export default async function (ctx: FunctionContext) {
       return common.returnFail("t('phone.loginError')")
     }
   }
+}
+
+async function getIPInfo(ip: string) {
+  if (process.env.GetIPInfoOff) {
+    return {}
+  }
+  const ipInfo = await cloud.fetch.get(`https://ipapi.co/${ip}/json/`)
+  return ipInfo.data
 }
