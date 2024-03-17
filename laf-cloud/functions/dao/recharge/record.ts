@@ -42,8 +42,10 @@ export class RechargeRecordDao {
           as: 'user',
           limit: 1,
           fieldJson: {
+            username: 1,
             phone: 1,
             email: 1,
+            nickname: 1,
           },
         },
         {
