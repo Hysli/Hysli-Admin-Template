@@ -13,6 +13,7 @@
     "bodyparser",
     "Cascader",
     "cdkey",
+    "clickoutside",
     "commitlint",
     "createtime",
     "daterange",

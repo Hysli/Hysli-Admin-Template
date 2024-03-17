@@ -1,0 +1,6 @@
+name: dao/message/index
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

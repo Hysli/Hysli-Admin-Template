@@ -1,0 +1,6 @@
+name: service/message/auth/getList
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []
