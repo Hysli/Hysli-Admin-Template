@@ -1,6 +1,18 @@
 import cloud from '@lafjs/cloud'
 import { _ctx } from '@/global'
-const { common, t, log, mail, sms, qiniu, dao, db, nw } = _ctx
+const {
+  common,
+  t,
+  log,
+  mail,
+  sms,
+  qiniu,
+  cloud_storage,
+  dao,
+  db,
+  nw,
+  console,
+} = _ctx
 const fs = require('fs')
 
 /**
@@ -47,27 +59,51 @@ export default async function (ctx: FunctionContext) {
       }
     }
     // console.log(fileName, fileData)
-    // 上传到七牛云
-    const res = await qiniu.uploadFile({
-      fileName: fileName,
-      fileData: fileData,
-    })
-    console.log('七牛云返回结果', res)
-    fs.unlinkSync(fileInfo.path) // 删除临时文件
-    if (!res || !res.fileUrl) {
-      return common.returnFail("t('upload.failed')")
-    }
 
-    let data = {
-      fileName: fileName,
-      fileUrl: res.fileUrl,
-      fileType: fileInfo.mimetype,
-      fileSize: fileInfo.size,
+    const enableQiniu = process.env.ENABLE_QINIU
+    if (enableQiniu && enableQiniu.toLocaleLowerCase() == 'true') {
+      // 上传到七牛云
+      const res = await qiniu.uploadFile({
+        fileName: fileName,
+        fileData: fileData,
+      })
+      // console.log('七牛云返回结果', res)
+      fs.unlinkSync(fileInfo.path) // 删除临时文件
+      if (!res || !res.fileUrl) {
+        return common.returnFail(t('upload.failed'))
+      }
+
+      let data = {
+        fileName: fileName,
+        fileUrl: res.fileUrl,
+        fileType: fileInfo.mimetype,
+        fileSize: fileInfo.size,
+      }
+      return common.returnSuccess(t('upload.success'), data)
+    } else {
+      // 上传到云存储
+      const res = await cloud_storage.uploadFile({
+        fileName: fileName,
+        fileBody: fileData,
+        contentType: fileInfo.mimetype,
+      })
+      console.log('云存储返回结果', res)
+      fs.unlinkSync(fileInfo.path) // 删除临时文件
+      if (!res || !res.fileUrl) {
+        return common.returnFail(t('upload.failed'))
+      }
+
+      let data = {
+        fileName: fileName,
+        fileUrl: res.fileUrl,
+        fileType: fileInfo.mimetype,
+        fileSize: fileInfo.size,
+      }
+      return common.returnSuccess(t('upload.success'), data)
     }
-    return common.returnSuccess('upload.success', data)
   } catch (e) {
     //TODO handle the exception
-    console.log('uploadFiles Error:: ', e.message)
+    console.error('uploadFiles Error:: ', e.message)
     return common.returnFail("t('upload.failed')")
   }
 }

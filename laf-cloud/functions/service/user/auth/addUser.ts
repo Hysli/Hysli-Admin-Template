@@ -75,13 +75,16 @@ export default async function (ctx: FunctionContext) {
     }
     const rid = await dao.userDao.addUser(userInfo)
     if (rid) {
+      // 记录操作日志
+      log(ctx, 'add')
+
       return common.returnAndPopup("t('add.success')")
     } else {
       return common.returnFail("t('add.failed')")
     }
   } catch (e) {
     //TODO handle the exception
-    console.log('addUser Error:: ', e.message)
+    console.error('addUser Error:: ', e.message)
     return common.returnFail("t('add.failed')")
   }
 }

@@ -67,6 +67,7 @@ const ja = {
   'title.isExist': 'タイトルは既に存在します',
   'type.isExist': 'このタイプは既に存在します',
   'pay.success': '支払いに成功しました',
+  'key.isExist': 'このkeyは既に存在します',
 }
 
 export default ja

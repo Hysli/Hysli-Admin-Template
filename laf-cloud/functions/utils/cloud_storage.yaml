@@ -1,0 +1,6 @@
+name: utils/cloud_storage
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

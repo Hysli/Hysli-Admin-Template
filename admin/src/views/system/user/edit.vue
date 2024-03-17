@@ -14,22 +14,26 @@
         </n-grid-item>
         <n-grid-item :span="12">
           <n-form-item v-if="!state.ruleForm._id" label="密码" path="password" :rule="[
-            { required: true, message: '密码不能为空', trigger: 'blur' },
-            { min: 6, max: 20, message: '密码长度需6-20位', trigger: 'blur' }
-            ]">
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度需6-20位', trigger: 'blur' }
+  ]">
             <div style="width: 100%;">
-              <n-input type="password" show-password-on="click" placeholder="请输入密码" v-model:value="state.ruleForm.password" />
+              <n-input type="password" show-password-on="click" placeholder="请输入密码"
+                v-model:value="state.ruleForm.password" />
             </div>
           </n-form-item>
           <n-form-item v-else label="密码" path="password">
-            <n-input type="password" show-password-on="click" placeholder="密码为空表示不修改" v-model:value="state.ruleForm.password" />
+            <n-input type="password" show-password-on="click" placeholder="密码为空表示不修改"
+              v-model:value="state.ruleForm.password" />
           </n-form-item>
         </n-grid-item>
         <n-grid-item :span="12">
-          <n-form-item label="手机号" path="phone" :rule="[{ required: !state.enableUserName, message: '手机号不能为空', trigger: 'blur' }]">
+          <n-form-item label="手机号" path="phone"
+            :rule="[{ required: !state.enableUserName, message: '手机号不能为空', trigger: 'blur' }]">
             <n-input placeholder="请输入手机号" v-model:value="state.ruleForm.phone" clearable />
           </n-form-item>
-          <n-form-item label="邮箱" path="email" :rule="[{ required: !state.enableUserName, message: '邮箱不能为空', trigger: 'blur' }]">
+          <n-form-item label="邮箱" path="email"
+            :rule="[{ required: !state.enableUserName, message: '邮箱不能为空', trigger: 'blur' }]">
             <n-input placeholder="请输入邮箱" v-model:value="state.ruleForm.email" clearable />
           </n-form-item>
           <n-form-item label="昵称" path="nickname">
@@ -44,8 +48,9 @@
         </n-grid-item>
         <n-grid-item :span="12">
           <n-form-item label="角色" path="roles" :rule="[{ required: true, message: '角色不能为空', trigger: 'blur' }]">
-            <n-select placeholder="请选择角色" multiple :options="state.roleData" :default-value="state.ruleForm.roles" 
-              :on-update:value="changeRole" value-field="code" label-field="name" max-tag-count="responsive" clearable />
+            <n-select placeholder="请选择角色" multiple :options="state.roleData" :default-value="state.ruleForm.roles"
+              :on-update:value="changeRole" value-field="code" label-field="name" max-tag-count="responsive"
+              clearable />
           </n-form-item>
         </n-grid-item>
         <n-grid-item :span="12">

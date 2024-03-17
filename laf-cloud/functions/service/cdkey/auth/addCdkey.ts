@@ -62,12 +62,15 @@ export default async function (ctx: FunctionContext) {
     }
 
     if (count >= 0) {
+      // 记录操作日志
+      log(ctx, 'add')
+
       return common.returnAndPopup("t('add.success')")
     }
     return common.returnFail("t('add.failed')")
   } catch (e) {
     //TODO handle the exception
-    console.log('addCdkey Error:: ', e.message)
+    console.error('addCdkey Error:: ', e.message)
     return common.returnFail("t('add.failed')")
   }
 }

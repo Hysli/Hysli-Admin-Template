@@ -38,13 +38,16 @@ export default async function (ctx: FunctionContext) {
       articleCategoryInfo
     )
     if (rid) {
+      // 记录操作日志
+      log(ctx, 'add')
+
       return common.returnAndPopup("t('add.success')")
     } else {
       return common.returnFail("t('add.failed')")
     }
   } catch (e) {
     //TODO handle the exception
-    console.log('addArticleCategory Error:: ', e.message)
+    console.error('addArticleCategory Error:: ', e.message)
     return common.returnFail("t('add.failed')")
   }
 }

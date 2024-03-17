@@ -28,13 +28,16 @@ export default async function (ctx: FunctionContext) {
     _data.update_time = Date.now()
     const result = await dao.payConfigDao.updatePayConfig(_data)
     if (result && result > 0) {
+      // 记录操作日志
+      log(ctx, 'update')
+
       return common.returnAndPopup("t('update.success')")
     } else {
       return common.returnFail("t('update.failed')")
     }
   } catch (e) {
     //TODO handle the exception
-    console.log('updatePayConfig Error:: ', e.message)
+    console.error('updatePayConfig Error:: ', e.message)
     return common.returnFail("t('update.failed')")
   }
 }

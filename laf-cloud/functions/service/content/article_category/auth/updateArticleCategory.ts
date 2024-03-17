@@ -30,13 +30,16 @@ export default async function (ctx: FunctionContext) {
     _data.update_time = Date.now()
     const result = await dao.articleCategoryDao.updateArticleCategory(_data)
     if (result && result > 0) {
+      // 记录操作日志
+      log(ctx, 'update')
+
       return common.returnAndPopup("t('update.success')")
     } else {
       return common.returnFail("t('update.failed')")
     }
   } catch (e) {
     //TODO handle the exception
-    console.log('updateArticleCategory Error:: ', e.message)
+    console.error('updateArticleCategory Error:: ', e.message)
     return common.returnFail("t('update.failed')")
   }
 }

@@ -31,13 +31,16 @@ export default async function (ctx: FunctionContext) {
     _data.update_time = Date.now()
     const result = await dao.cdkeyManageDao.updateCdkey(_data)
     if (result && result > 0) {
+      // 记录操作日志
+      log(ctx, 'update')
+
       return common.returnAndPopup("t('operate.success')")
     } else {
       return common.returnFail("t('operate.failed')")
     }
   } catch (e) {
     //TODO handle the exception
-    console.log('updateCdkey Error:: ', e.message)
+    console.error('updateCdkey Error:: ', e.message)
     return common.returnFail("t('update.failed')")
   }
 }

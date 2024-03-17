@@ -65,6 +65,7 @@ const zhHans = {
   'title.isExist': '该标题已存在',
   'type.isExist': '该类型已存在',
   'pay.success': '支付成功',
+  'key.isExist': '此key已存在',
 }
 
 export default zhHans

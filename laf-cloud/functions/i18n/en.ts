@@ -69,6 +69,7 @@ const en = {
   'title.isExist': 'The title already exists',
   'type.isExist': 'The type already exists',
   'pay.success': 'Payment successful',
+  'key.isExist': 'This key already exists',
 }
 
 export default en

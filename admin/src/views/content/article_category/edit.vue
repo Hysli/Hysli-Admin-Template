@@ -46,8 +46,7 @@ const emits = defineEmits(['handleQuery'])
 const state = reactive({
   showModal: false,
   btnLoading: false,
-  ruleForm: {} as any,
-  menuData: [] as any
+  ruleForm: {} as any
 })
 
 onMounted(() => {

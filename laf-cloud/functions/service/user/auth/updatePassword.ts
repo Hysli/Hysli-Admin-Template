@@ -36,13 +36,16 @@ export default async function (ctx: FunctionContext) {
 
     const result = await dao.userDao.updateUser(userData)
     if (result && result > 0) {
+      // 记录操作日志
+      log(ctx, 'update')
+
       return common.returnAndPopup("t('update.success')")
     } else {
       return common.returnFail("t('update.failed')")
     }
   } catch (e) {
     //TODO handle the exception
-    console.log('updatePassword Error:: ', e.message)
+    console.error('updatePassword Error:: ', e.message)
     return common.returnFail("t('update.failed')")
   }
 }

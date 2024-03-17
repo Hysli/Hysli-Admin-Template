@@ -8,7 +8,7 @@ import nw from 'nw-lafjs'
  */
 export async function log(
   ctx: FunctionContext,
-  type: 'update' | 'add' | 'del' | 'get'
+  type: 'update' | 'add' | 'delete' | 'get'
 ): Promise<void> {
   const ip = ctx.headers['remote-host']
     ? ctx.headers['remote-host']
