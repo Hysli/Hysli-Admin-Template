@@ -49,6 +49,7 @@ const originalConsole = {
   error: console.error,
   warn: console.warn,
   info: console.info,
+  debug: console.debug,
 }
 
 const customConsole: ExtendedConsole = {
@@ -58,6 +59,7 @@ const customConsole: ExtendedConsole = {
 
 customConsole.log = (...args) => consoleInterceptor('log', ...args)
 customConsole.error = (...args) => consoleInterceptor('error', ...args)
+customConsole.debug = (...args) => consoleInterceptor('debug', ...args)
 customConsole.warn = (...args) => consoleInterceptor('warn', ...args)
 customConsole.info = (...args) => consoleInterceptor('info', ...args)
 
