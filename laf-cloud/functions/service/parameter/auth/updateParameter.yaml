@@ -1,0 +1,6 @@
+name: service/parameter/auth/updateParameter
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

@@ -1,0 +1,6 @@
+name: service/parameter/auth/deleteParameter
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

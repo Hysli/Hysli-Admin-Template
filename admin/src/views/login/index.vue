@@ -141,7 +141,6 @@ const router = useRouter()
 const route = useRoute()
 
 onMounted(() => {
-  console.log(1, globSetting)
   userForm.loginType = globSetting.enableUserName == 'true' ? 'username' : 'phone'
   // console.log(globSetting.enableUserName, userForm.loginType)
 })

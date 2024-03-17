@@ -1,0 +1,6 @@
+name: service/maintenance/log/auth/getSystemLogList
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []
