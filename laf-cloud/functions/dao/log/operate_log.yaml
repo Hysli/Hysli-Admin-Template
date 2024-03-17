@@ -1,0 +1,6 @@
+name: dao/log/operate_log
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

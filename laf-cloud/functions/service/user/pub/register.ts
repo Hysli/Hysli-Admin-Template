@@ -85,7 +85,7 @@ export default async function (ctx: FunctionContext) {
       }
     } catch (e) {
       //TODO handle the exception
-      console.log('registerByEmail Error:: ', e.message)
+      console.error('registerByEmail Error:: ', e.message)
       return common.returnFail("t('account.registerFail')")
     }
   }
@@ -161,7 +161,7 @@ export default async function (ctx: FunctionContext) {
       }
     } catch (e) {
       //TODO handle the exception
-      console.log('registerByEmail Error:: ', e.message)
+      console.error('registerByEmail Error:: ', e.message)
       return common.returnFail("t('account.registerFail')")
     }
   }
@@ -223,7 +223,7 @@ export default async function (ctx: FunctionContext) {
       return common.returnFail("t('email.sendError')")
     } catch (e) {
       //TODO handle the exception
-      console.log('sendEmailCode Exception:: ', e.message)
+      console.error('sendEmailCode Exception:: ', e.message)
       return common.returnFail("t('email.sendError')")
     }
   }
@@ -298,7 +298,7 @@ export default async function (ctx: FunctionContext) {
       }
     } catch (e) {
       //TODO handle the exception
-      console.log('registerByPhone Error:: ', e.message)
+      console.error('registerByPhone Error:: ', e.message)
       return common.returnFail("t('account.registerFail')")
     }
   }
@@ -356,7 +356,7 @@ export default async function (ctx: FunctionContext) {
       return common.returnFail("t('phone.sendError')")
     } catch (e) {
       //TODO handle the exception
-      console.log('sendSmsCode Exception:: ', e.message)
+      console.error('sendSmsCode Exception:: ', e.message)
       return common.returnFail("t('phone.sendError')")
     }
   }

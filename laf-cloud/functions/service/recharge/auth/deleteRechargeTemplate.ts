@@ -23,11 +23,20 @@ export default async function (ctx: FunctionContext) {
     return common.returnFail("t('data.notExist')")
   }
 
-  const result = await dao.rechargeDao.deleteRechargeTemplateById(
-    rechargeTemplateData._id
-  )
-  if (result && result > 0) {
-    return common.returnAndPopup("t('delete.success')")
+  try {
+    const result = await dao.rechargeDao.deleteRechargeTemplateById(
+      rechargeTemplateData._id
+    )
+    if (result && result > 0) {
+      // 记录操作日志
+      log(ctx, 'delete')
+
+      return common.returnAndPopup("t('delete.success')")
+    }
+    return common.returnFail("t('delete.failed')")
+  } catch (e) {
+    //TODO handle the exception
+    console.error('deleteRechargeTemplateById Error:: ', e.message)
+    return common.returnFail("t('delete.failed')")
   }
-  return common.returnFail("t('delete.failed')")
 }

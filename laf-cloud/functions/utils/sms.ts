@@ -4,13 +4,6 @@ import * as aliClient from '@alicloud/openapi-client'
 import * as aliUtil from '@alicloud/tea-util'
 
 const db = cloud.database()
-const clientConfig = {
-  accessKeyId: process.env.Alicloud_AccessKeyId?.trim(),
-  accessKeySecret: process.env.Alicloud_AccessKeySecret?.trim(),
-  signName: process.env.Alicloud_SignName?.trim(),
-  templateCode: process.env.Alicloud_TemplateCode?.trim(),
-  endpoint: process.env.Alicloud_Endpoint?.trim()
-}
 
 /**
  * 短信发送验证码
@@ -22,20 +15,28 @@ export async function sendSmsCode(
   phone: string,
   smsCode: string
 ): Promise<boolean> {
+  const clientConfig = {
+    accessKeyId: process.env.Alicloud_AccessKeyId?.trim(),
+    accessKeySecret: process.env.Alicloud_AccessKeySecret?.trim(),
+    signName: process.env.Alicloud_SignName?.trim(),
+    templateCode: process.env.Alicloud_TemplateCode?.trim(),
+    endpoint: process.env.Alicloud_Endpoint?.trim(),
+  }
+
   try {
     // 初始化短信请求
     const sendSmsRequest = new dysmsapi.SendSmsRequest({
       phoneNumbers: phone,
       signName: clientConfig.signName,
       templateCode: clientConfig.templateCode,
-      templateParam: `{"code":${smsCode}}`
+      templateParam: `{"code":${smsCode}}`,
     })
     // console.log('sendSmsRequest', clientConfig)
     // 初始化短信配置
     const config = new aliClient.Config({
       accessKeyId: clientConfig.accessKeyId,
       accessKeySecret: clientConfig.accessKeySecret,
-      endpoint: clientConfig.endpoint
+      endpoint: clientConfig.endpoint,
     })
     const client = new Dysmsapi(config)
     const runtime = new aliUtil.RuntimeOptions({})

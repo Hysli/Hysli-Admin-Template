@@ -2,6 +2,7 @@ import { log } from '@/utils/log'
 import * as mail from '@/utils/mail'
 import * as sms from '@/utils/sms'
 import * as qiniu from '@/utils/qiniu'
+import * as cloud_storage from '@/utils/cloud_storage'
 import * as pay from '@/utils/pay'
 import i18n from '@/utils/i18n'
 import { common, returnFailType, returnDataType } from '@/utils/common'
@@ -13,6 +14,7 @@ export const utils: UtilsType = {
   mail,
   sms,
   qiniu,
+  cloud_storage,
   pay,
   common,
   dao,
@@ -22,12 +24,13 @@ export const utils: UtilsType = {
 export interface UtilsType {
   log: (
     ctx: FunctionContext,
-    type: 'update' | 'add' | 'del' | 'get'
+    type: 'update' | 'add' | 'delete' | 'get'
   ) => Promise<void>
   i18n: any
   mail: MailType
   sms: SmsType
   qiniu: QiniuType
+  cloud_storage: CloudStorageType
   pay: PayType
   common: CommonType
   dao: DaoType
@@ -218,4 +221,13 @@ interface PayType {
     }
    */
   WxAppletPay: (param: pay.WxPayParam) => Promise<object>
+}
+
+interface CloudStorageType {
+  /**
+   * 上传文件
+   * @param {fileName:string,fileBody:any,contentType:string} obj
+   * @returns {object}
+   */
+  uploadFile: (obj: any) => Promise<any>
 }

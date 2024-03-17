@@ -35,9 +35,18 @@ export default async function (ctx: FunctionContext) {
     return common.returnFail("t('menu.isExistSubMenu')")
   }
 
-  const result = await dao.menuManageDao.deleteMenuById(menuData._id)
-  if (result && result > 0) {
-    return common.returnAndPopup("t('delete.success')")
+  try {
+    const result = await dao.menuManageDao.deleteMenuById(menuData._id)
+    if (result && result > 0) {
+      // 记录操作日志
+      log(ctx, 'delete')
+
+      return common.returnAndPopup("t('delete.success')")
+    }
+    return common.returnFail("t('delete.failed')")
+  } catch (e) {
+    //TODO handle the exception
+    console.error('deleteMenuById Error:: ', e.message)
+    return common.returnFail("t('delete.failed')")
   }
-  return common.returnFail("t('delete.failed')")
 }

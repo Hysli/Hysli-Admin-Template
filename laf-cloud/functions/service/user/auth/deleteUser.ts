@@ -12,9 +12,18 @@ export default async function (ctx: FunctionContext) {
     return common.returnFail('Error: _id is empty')
   }
 
-  const result = await dao.userDao.deleteUserById(_data?._id)
-  if (result && result > 0) {
-    return common.returnAndPopup("t('delete.success')")
+  try {
+    const result = await dao.userDao.deleteUserById(_data?._id)
+    if (result && result > 0) {
+      // 记录操作日志
+      log(ctx, 'delete')
+
+      return common.returnAndPopup("t('delete.success')")
+    }
+    return common.returnFail("t('delete.failed')")
+  } catch (e) {
+    //TODO handle the exception
+    console.error('deleteUserById Error:: ', e.message)
+    return common.returnFail("t('delete.failed')")
   }
-  return common.returnFail("t('delete.failed')")
 }

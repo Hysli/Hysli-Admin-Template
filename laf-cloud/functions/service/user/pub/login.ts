@@ -96,7 +96,7 @@ export default async function (ctx: FunctionContext) {
       })
     } catch (e) {
       //TODO handle the exception
-      console.log('loginByUserName Error:: ', e.message)
+      console.error('loginByUserName Error:: ', e.message)
       return common.returnFail("t('account.loginError')")
     }
   }
@@ -146,7 +146,7 @@ export default async function (ctx: FunctionContext) {
       })
     } catch (e) {
       //TODO handle the exception
-      console.log('loginByEmail Error:: ', e.message)
+      console.error('loginByEmail Error:: ', e.message)
       return common.returnFail("t('account.loginError')")
     }
   }
@@ -212,7 +212,7 @@ export default async function (ctx: FunctionContext) {
       return common.returnFail("t('email.sendError')")
     } catch (e) {
       //TODO handle the exception
-      console.log('sendEmailCode Exception:: ', e.message)
+      console.error('sendEmailCode Exception:: ', e.message)
       return common.returnFail("t('email.sendError')")
     }
   }
@@ -275,7 +275,7 @@ export default async function (ctx: FunctionContext) {
       })
     } catch (e) {
       //TODO handle the exception
-      console.log('loginByEmailCode Error:: ', e.message)
+      console.error('loginByEmailCode Error:: ', e.message)
       return common.returnFail("t('account.loginError')")
     }
   }
@@ -325,7 +325,7 @@ export default async function (ctx: FunctionContext) {
       })
     } catch (e) {
       //TODO handle the exception
-      console.log('loginByPhone Error:: ', e.message)
+      console.error('loginByPhone Error:: ', e.message)
       return common.returnFail("t('account.loginError')")
     }
   }
@@ -387,7 +387,7 @@ export default async function (ctx: FunctionContext) {
       return common.returnFail("t('phone.sendError')")
     } catch (e) {
       //TODO handle the exception
-      console.log('sendPhoneCode Error:: ', e.message)
+      console.error('sendPhoneCode Error:: ', e.message)
       return common.returnFail("t('phone.sendError')")
     }
   }
@@ -449,7 +449,7 @@ export default async function (ctx: FunctionContext) {
       })
     } catch (e) {
       //TODO handle the exception
-      console.log('loginByPhoneCode Error:: ', e.message)
+      console.error('loginByPhoneCode Error:: ', e.message)
       return common.returnFail("t('phone.loginError')")
     }
   }

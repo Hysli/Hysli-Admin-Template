@@ -48,13 +48,16 @@ export default async function (ctx: FunctionContext) {
     }
     const rid = await dao.rechargeDao.addRechargeTemplate(templateInfo)
     if (rid) {
+      // 记录操作日志
+      log(ctx, 'add')
+
       return common.returnAndPopup("t('add.success')")
     } else {
       return common.returnFail("t('add.failed')")
     }
   } catch (e) {
     //TODO handle the exception
-    console.log('addRechargeTemplate Error:: ', e.message)
+    console.error('addRechargeTemplate Error:: ', e.message)
     return common.returnFail("t('add.failed')")
   }
 }

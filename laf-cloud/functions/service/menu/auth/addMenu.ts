@@ -55,13 +55,16 @@ export default async function (ctx: FunctionContext) {
     }
     const mid = await dao.menuManageDao.addMenu(menuInfo)
     if (mid) {
+      // 记录操作日志
+      log(ctx, 'add')
+
       return common.returnAndPopup("t('add.success')")
     } else {
       return common.returnFail("t('add.failed')")
     }
   } catch (e) {
     //TODO handle the exception
-    console.log('addMenu Error:: ', e.message)
+    console.error('addMenu Error:: ', e.message)
     return common.returnFail("t('add.failed')")
   }
 }

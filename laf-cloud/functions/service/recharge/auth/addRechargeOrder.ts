@@ -70,11 +70,13 @@ export default async function (ctx: FunctionContext) {
         return common.returnSuccess("t('add.success')", data)
       }
     }
+    // 记录操作日志
+    log(ctx, 'add')
 
     return common.returnFail("t('add.failed')")
   } catch (e) {
     //TODO handle the exception
-    console.log('addRechargeOrder Error:: ', e.message)
+    console.error('addRechargeOrder Error:: ', e.message)
     return common.returnFail("t('add.failed')")
   }
 }

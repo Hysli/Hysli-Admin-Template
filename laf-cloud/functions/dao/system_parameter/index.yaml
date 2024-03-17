@@ -1,0 +1,6 @@
+name: dao/system_parameter/index
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

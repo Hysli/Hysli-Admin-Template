@@ -27,5 +27,8 @@ export default async function (ctx: FunctionContext) {
     _data?.page,
     _data?.pageSize
   )
+  // 记录操作日志
+  log(ctx, 'get')
+
   return common.returnSuccess('', list)
 }

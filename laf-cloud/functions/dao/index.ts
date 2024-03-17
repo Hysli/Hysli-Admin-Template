@@ -17,6 +17,9 @@ import {
   ArticleManage,
 } from '@/dao/content_manage/article/index'
 import { PayConfigDao, PayConfig } from '@/dao/pay_config/index'
+import { LafEnvDao, LafEnv } from '@/dao/system_parameter/index'
+import { OperateLogDao, OperateLog } from '@/dao/log/operate_log'
+import { ConsoleLogsDao, ConsoleLogs } from '@/dao/log/system_log'
 import { MessageDao, MessageDocument } from '@/dao/message/index'
 
 export const dao: DaoType = {
@@ -33,6 +36,9 @@ export const dao: DaoType = {
   articleCategoryDao: ArticleCategoryDao,
   articleManageDao: ArticleManageDao,
   payConfigDao: PayConfigDao,
+  lafEnvDao: LafEnvDao,
+  operateLogDao: OperateLogDao,
+  consoleLogsDao: ConsoleLogsDao,
   messageDao: MessageDao
 }
 
@@ -577,6 +583,96 @@ export interface DaoType {
      * @returns 成功时返回修改记录数，失败返回 null
      */
     deletePayConfigById: (_id: string) => Promise<number>
+  }
+  lafEnvDao: {
+    /**
+     * 校验key是否已存在
+     * @param key key
+     * @returns 不存在返回false，已存在或失败返回true
+     */
+    isExistByKey: (key: string, _id?: string) => Promise<boolean>
+    /**
+     * 获取系统参数列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @param sortArr 排序规则
+     * @returns 返回系统参数集合
+     */
+    getSystemParamterList: (
+      whereJson: any,
+      pageIndex: number,
+      pageSize: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<LafEnv>>
+    /**
+     * 根据主键id获取系统参数信息
+     * @param _id 主键id
+     * @returns 返回LafEnv实体
+     */
+    getInfoById: (_id: string) => Promise<LafEnv>
+    /**
+     * 添加系统参数
+     * @param entity 系统参数实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addSystemParam: (entity: LafEnv) => Promise<any>
+    /**
+     * 修改系统参数
+     * @param entity 系统参数实体
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    updateSystemParam: (entity: LafEnv) => Promise<number>
+    /**
+     * 通过主键id删除系统参数
+     * @param _id 主键id
+     * @returns 成功时返回修改记录数，失败返回null
+     */
+    deleteSystemParamById: (_id: string) => Promise<number>
+  }
+  operateLogDao: {
+    /**
+     * 获取操作日志列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @param sortArr 排序规则
+     * @returns 返回操作日志集合
+     */
+    getOperateLogList: (
+      whereJson: any,
+      pageIndex: number,
+      pageSize: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<OperateLog>>
+    /**
+     * 添加操作日志
+     * @param entity 操作日志实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addOperateLog: (entity: OperateLog) => Promise<any>
+  }
+  consoleLogsDao: {
+    /**
+     * 获取系统日志列表（带分页）
+     * @param whereJson 查询条件JSON格式
+     * @param pageIndex 当前页数
+     * @param pageSize 每页数量
+     * @param sortArr 排序规则
+     * @returns 返回系统日志集合
+     */
+    getConsoleLogsList: (
+      whereJson: any,
+      pageIndex: number,
+      pageSize: number,
+      sortArr?: Array<any>
+    ) => Promise<Array<ConsoleLogs>>
+    /**
+     * 添加系统日志
+     * @param entity 系统日志实体
+     * @returns 成功时返回id值，失败时返回null
+     */
+    addConsoleLogs: (entity: ConsoleLogs) => Promise<any>
   }
   messageDao: {
     /**

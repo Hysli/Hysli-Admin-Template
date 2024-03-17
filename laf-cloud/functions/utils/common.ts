@@ -215,12 +215,17 @@ async function setEnv() {
   const { data: env_Data } = await db
     .collection('laf_env')
     .where({
-      status: _.eq(1),
+      // status: _.eq(1),
     })
     .get()
   if (env_Data) {
     env_Data.forEach((item: any) => {
-      process.env[item.key] = item.value
+      // 如果被禁用或者删除，清空此环境变量的值
+      if (item.status != 1 && process.env[item.key]) {
+        process.env[item.key] = ''
+      } else {
+        process.env[item.key] = item.value
+      }
     })
   }
 }
@@ -238,7 +243,7 @@ function getIP(ctx: FunctionContext) {
     : ctx.headers['x-real-ip']
     ? ctx.headers['x-real-ip']
     : ctx.headers['x-original-forwarded-for']
-  return ip || "127.0.0.1"
+  return ip || '127.0.0.1'
 }
 
 export const common = {
@@ -260,5 +265,3 @@ export const common = {
   setEnv,
   getIP,
 }
-
-

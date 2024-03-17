@@ -56,6 +56,9 @@ export default async function (ctx: FunctionContext) {
       }
       return childs
     }
+    // 记录操作日志
+    log(ctx, 'get')
+
     return common.returnSuccess('', menuList)
   }
   return common.returnSuccess('', list)

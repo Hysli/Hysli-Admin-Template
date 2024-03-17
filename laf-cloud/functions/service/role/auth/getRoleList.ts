@@ -19,6 +19,13 @@ export default async function (ctx: FunctionContext) {
     whereJson['name'] = { $regex: _data.name }
   }
 
-  const list = await dao.roleManageDao.getRoleList(whereJson, _data?.page, _data?.pageSize)
+  const list = await dao.roleManageDao.getRoleList(
+    whereJson,
+    _data?.page,
+    _data?.pageSize
+  )
+  // 记录操作日志
+  log(ctx, 'get')
+
   return common.returnSuccess('', list)
 }
