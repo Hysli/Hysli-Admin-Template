@@ -234,12 +234,6 @@ const transform: AxiosTransform = {
     const isCancel = axios.isCancel(error)
     if (!isCancel) {
       checkStatus(error.response && error.response.status, msg)
-
-      const LoginName = PageEnum.BASE_LOGIN_NAME
-      const LoginPath = PageEnum.BASE_LOGIN
-      if (router.currentRoute.value?.name === LoginName) return
-      storage.clear()
-      window.location.href = LoginPath
     } else {
       console.warn(error, '请求被取消！')
     }

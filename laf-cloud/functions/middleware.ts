@@ -74,9 +74,13 @@ function requestRecord() {
   if (!user) {
     const key = headers['Authorization'] || headers['authorization']
     if (key) {
-      const { uid } = utils.common.aesDecKey(key) as any
-      user = {
-        uid,
+      try {
+        const { uid } = utils.common.aesDecKey(key) as any
+        user = {
+          uid,
+        }
+      } catch (e) {
+        user = undefined
       }
     }
   }
