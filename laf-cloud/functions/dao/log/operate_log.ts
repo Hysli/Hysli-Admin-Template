@@ -24,7 +24,7 @@ export class OperateLogDao {
     pageSize: number,
     sortArr?: Array<any>
   ): Promise<Array<OperateLog>> {
-    const result = await nw.db.select({
+    const result = await nw.db.selects({
       dbName: this._dbName,
       whereJson,
       pageIndex,
@@ -34,6 +34,21 @@ export class OperateLogDao {
           ? [{ name: 'create_time', type: 'desc' }]
           : sortArr,
       getCount: true,
+      foreignDB: [
+        {
+          dbName: 'user',
+          foreignKey: '_id',
+          localKey: 'uid',
+          as: 'user',
+          limit: 1,
+          fieldJson: {
+            username: 1,
+            phone: 1,
+            email: 1,
+            nickname: 1,
+          },
+        },
+      ],
     })
     return result
   }
