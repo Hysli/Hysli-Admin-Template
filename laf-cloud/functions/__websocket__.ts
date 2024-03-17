@@ -6,12 +6,12 @@ const dbName = 'message'
 
 export async function main(ctx: FunctionContext) {
   if (ctx.method === 'WebSocket:connection') {
-    if (!ctx.headers.authorization) {
+    if (!ctx.headers['sec-websocket-protocol']) {
       ctx.socket.send('connection fail, no token found in headers')
       ctx.socket.close()
       return
     }
-    uid = cloud.parseToken(ctx.headers.authorization).user_id
+    uid = cloud.parseToken(ctx.headers['sec-websocket-protocol']).uid
     if (!uid) {
       ctx.socket.close()
       return
@@ -20,16 +20,22 @@ export async function main(ctx: FunctionContext) {
 
     const database = cloud.mongo.db
     const collection = database.collection(dbName)
+    const _ = cloud.database().command
     const { data } = await cloud
       .database()
       .collection(dbName)
       .where({
-        uid,
-        status: 'pending',
+        uids: _.or(_.eq(uid), _.eq('all')),
+        status: _.not(
+          _.elemMatch({
+            uid: uid,
+            status: _.eq('read'),
+          })
+        ),
       })
       .get()
     for (const item of data) {
-      ctx.socket.send(item.message)
+      ctx.socket.send(JSON.stringify(item))
       await cloud
         .database()
         .collection(dbName)
@@ -37,7 +43,10 @@ export async function main(ctx: FunctionContext) {
           _id: item._id,
         })
         .update({
-          status: 'done',
+          status: _.push({
+            uid: uid,
+            status: 'sending',
+          }),
         })
     }
 
@@ -47,15 +56,16 @@ export async function main(ctx: FunctionContext) {
           $or: [
             {
               $and: [
-                { 'fullDocument.uid': uid },
-                { 'fullDocument.status': 'pending' },
+                // 匹配 uids 数组中包含特定 uid 的情况
+                { 'fullDocument.uids': uid },
                 { operationType: 'insert' },
               ],
             },
             {
               $and: [
-                { 'updateDescription.updatedFields.status': 'pending' },
-                { operationType: 'update' },
+                // 匹配 uids 数组中包含字符串 "all" 的情况
+                { 'fullDocument.uids': ['all'] },
+                { operationType: 'insert' },
               ],
             },
           ],
@@ -64,25 +74,25 @@ export async function main(ctx: FunctionContext) {
     ])
 
     changeStream.on('change', async (change) => {
-      console.log('捕获到变化：', change, change.operationType)
+      console.log('捕获到变化：', ctx.requestId, change, change.operationType)
       try {
-        const { data } = await cloud
-          .database()
-          .collection('message')
-          .where({
-            _id: change.documentKey._id,
-            status: 'pending',
-          })
-          .get()
-        ctx.socket.send(data[0].message)
+        const message = {
+          _id: change.fullDocument._id,
+          content: change.fullDocument.content,
+          type: change.fullDocument.type,
+        }
+        ctx.socket.send(JSON.stringify(message))
         await cloud
           .database()
-          .collection('message')
+          .collection(dbName)
           .where({
-            _id: change.documentKey._id,
+            _id: message._id,
           })
           .update({
-            status: 'done',
+            status: _.push({
+              uid: uid,
+              status: 'sending',
+            }),
           })
       } catch (e) {
         console.error('WebSocket 推送失败', uid, e)
@@ -92,6 +102,24 @@ export async function main(ctx: FunctionContext) {
 
   if (ctx.method === 'WebSocket:message') {
     const { data } = ctx.params
+    // 如果是心跳包则直接返回
+    if (data === 'heartbeat') {
+      return
+    }
+    // 如果回复了已读消息 ID，则更新数据库
+    if (data.toString()?.startsWith('read_id:')) {
+      const messageId = data.toString().split(':')[1]
+      await cloud
+        .database()
+        .collection(dbName)
+        .where({
+          _id: messageId,
+          'status.uid': uid,
+        })
+        .update({
+          'status.$.status': 'read',
+        })
+    }
     console.debug('WebSocket:message', uid, data.toString())
     ctx.socket.send('I have received your message')
   }
