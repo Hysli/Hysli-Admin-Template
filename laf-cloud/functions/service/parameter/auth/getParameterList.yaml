@@ -1,0 +1,6 @@
+name: service/parameter/auth/getParameterList
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

@@ -1,0 +1,6 @@
+name: service/maintenance/log/auth/getOperateLogList
+desc: ""
+methods:
+  - GET
+  - POST
+tags: []

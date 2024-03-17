@@ -101,9 +101,11 @@ watch(
       const cpuList = state.resourceData.cpuUsage[state.resourceData.cpuUsage.length - 1]
       const num = 0 //cpuList.values.length - 12 > 0 ? (cpuList.values.length - 12) : 0
       for (let i = num; i < cpuList.values.length; i++) {
-        cpuCategories.push(formattedTime(cpuList.values[i][0]))
-        const value = Number(cpuList.values[i][1]).toFixed(3)
-        cpuData.push(Number(value))
+        if (i % 5 == 0) {
+          cpuCategories.push(formattedTime(cpuList.values[i][0]))
+          const value = Number(cpuList.values[i][1]).toFixed(3)
+          cpuData.push(Number(value))
+        }
       }
       if (cpuCategories.length > 0 && cpuData.length > 0) {
         // 渲染CPU
