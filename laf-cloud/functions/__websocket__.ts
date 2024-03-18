@@ -4,6 +4,8 @@ let changeStream: any
 let uid: string
 const dbName = 'message'
 
+let time = Date.now()
+
 export async function main(ctx: FunctionContext) {
   if (ctx.method === 'WebSocket:connection') {
     if (!ctx.headers['sec-websocket-protocol']) {
@@ -104,7 +106,16 @@ export async function main(ctx: FunctionContext) {
     const { data } = ctx.params
     // 如果是心跳包则直接返回
     if (data === 'heartbeat') {
-      return
+      console.log('heartbeat', time)
+      if (time <= Date.now() - 30000) {
+        time = Date.now()
+      } else {
+        if (changeStream) {
+          changeStream.close()
+        }
+        ctx.socket.close()
+        return
+      }
     }
     // 如果回复了已读消息 ID，则更新数据库
     if (data.toString()?.startsWith('read_id:')) {
@@ -133,8 +144,9 @@ export async function main(ctx: FunctionContext) {
     const { code, reason } = ctx.params
     console.debug('WebSocket:close', uid, code, reason)
     if (changeStream) {
-      await changeStream.close()
+      changeStream.close()
     }
     ctx.socket.send('WebSocket:close')
+    return
   }
 }
