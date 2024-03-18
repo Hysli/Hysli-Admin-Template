@@ -43,6 +43,7 @@ export async function main(ctx: FunctionContext) {
         .collection(dbName)
         .where({
           _id: item._id,
+          'status.uid': _.not(_.eq(uid)),
         })
         .update({
           status: _.push({
@@ -89,6 +90,7 @@ export async function main(ctx: FunctionContext) {
           .collection(dbName)
           .where({
             _id: message._id,
+            'status.uid': _.not(_.eq(uid)),
           })
           .update({
             status: _.push({
@@ -110,6 +112,7 @@ export async function main(ctx: FunctionContext) {
       if (time <= Date.now() - 30000) {
         time = Date.now()
       } else {
+        console.log('heartbeat timeout ', ctx.requestId)
         if (changeStream) {
           changeStream.close()
         }
@@ -131,7 +134,7 @@ export async function main(ctx: FunctionContext) {
           'status.$.status': 'read',
         })
     }
-    console.debug('WebSocket:message', uid, data.toString())
+    console.debug('WebSocket:message', ctx.requestId, uid, data.toString())
     ctx.socket.send('I have received your message')
   }
 
