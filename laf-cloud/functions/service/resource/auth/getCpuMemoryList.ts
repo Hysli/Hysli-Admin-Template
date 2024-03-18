@@ -13,10 +13,9 @@ export default async function (ctx: FunctionContext) {
     return common.returnFail('PAT is empty')
   }
 
-  const headers = ctx.headers
   const appid = process.env.APPID
-  const host = headers['x-forwarded-host'] ?? headers['host']
-  const baseUrl = `https://${host.toString().replace(appid, 'api')}`
+  const baseUrl =
+    process.env.API_URL || 'http://laf-server.laf-system.svc.cluster.local:3000'
   const user = { pat }
 
   try {
