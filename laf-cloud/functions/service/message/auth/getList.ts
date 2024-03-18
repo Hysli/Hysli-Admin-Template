@@ -10,7 +10,6 @@ const _ = cloud.database().command
  */
 export default async function (ctx: FunctionContext) {
   const _data = ctx.body
-  console.log('user', ctx.user)
 
   let whereJson = {}
   if (_data?.content) {
@@ -23,6 +22,5 @@ export default async function (ctx: FunctionContext) {
     _data?.page,
     _data?.pageSize
   )
-  console.log('list', list)
   return common.returnSuccess('', list)
 }
