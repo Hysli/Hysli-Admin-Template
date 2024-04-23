@@ -3,7 +3,13 @@ name: Hysli-Admin-Template
 spec:
   runtime: node
   dependencies:
-    nw-lafjs: 1.0.34
     moment: 2.30.1
+    tencentcloud-sdk-nodejs-ses: 4.0.753
+    "@dcloudio/uni-i18n": 2.0.2-3090820231124001
+    "@alicloud/dysmsapi20170525": 2.0.24
+    "@alicloud/tea-util": 1.4.7
+    nw-lafjs: 1.0.41
     qiniu: 7.11.0
-    "@dcloudio/uni-i18n": 2.0.2-3090920231225001
+    wechatpay-node-v3-laf: 2.1.14
+    "@alicloud/openapi-client": 0.4.8
+    qrcode: 1.5.3

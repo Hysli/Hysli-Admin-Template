@@ -459,6 +459,12 @@ async function getIPInfo(ip: string) {
   if (process.env.GetIPInfoOff) {
     return {}
   }
-  const ipInfo = await cloud.fetch.get(`https://ipapi.co/${ip}/json/`)
-  return ipInfo.data
+  try {
+    const ipInfo = await cloud.fetch.get(`https://ipapi.co/${ip}/json/`)
+    return ipInfo.data
+  } catch (e) {
+    //TODO handle the exception
+    console.error('getIPInfo Error:: ', e.message)
+    return ip
+  }
 }
